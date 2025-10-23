@@ -1,11 +1,140 @@
 "use client"
 
-import { useEffect, useState, useRef } from "react"
+import { useEffect, useState, useRef, CSSProperties } from "react"
 import { Canvas } from "@react-three/fiber"
 import FloatingCards from "./FloatingCards"
 
+const styles: { [key: string]: CSSProperties } = {
+  section: {
+    position: 'relative',
+    minHeight: '200vh',
+    background: 'linear-gradient(to bottom, #030712, #111827, #030712)',
+  },
+  stickyCanvasContainer: {
+    position: 'sticky',
+    top: 0,
+    height: '100vh',
+    width: '100%',
+  },
+  scrollContentContainer: {
+    position: 'relative',
+    zIndex: 10,
+    display: 'flex',
+    minHeight: '100vh',
+    alignItems: 'flex-end',
+    justifyContent: 'center',
+    paddingBottom: '5rem',
+  },
+  textCenter: {
+    textAlign: 'center',
+  },
+  progressIndicatorContainer: {
+    marginBottom: '2rem',
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  progressIndicatorInner: {
+    display: 'flex',
+    gap: '0.5rem',
+  },
+  progressIndicatorBar: {
+    height: '0.5rem',
+    width: '3rem',
+    borderRadius: '9999px',
+    backgroundColor: '#1f2937',
+    transition: 'all 0.3s',
+  },
+  motivationalTextContainer: {
+    marginBottom: '3rem',
+  },
+  h2: {
+    fontSize: '3rem',
+    lineHeight: '1',
+    fontWeight: 'bold',
+    color: 'white',
+    marginBottom: '1rem',
+  },
+  p: {
+    fontSize: '1.5rem',
+    lineHeight: '2rem',
+    fontWeight: 'bold',
+    background: 'linear-gradient(to right, #22d3ee, #3b82f6, #8b5cf6)',
+    WebkitBackgroundClip: 'text',
+    backgroundClip: 'text',
+    color: 'transparent',
+  },
+  ctaContainer: {
+    position: 'relative',
+    display: 'inline-block',
+  },
+  ctaGlow: {
+    position: 'absolute',
+    inset: '-1rem',
+    borderRadius: '9999px',
+    background: 'linear-gradient(to right, #06b6d4, #3b82f6, #9333ea)',
+    opacity: 0.5,
+    filter: 'blur(32px)',
+  },
+  button: {
+    position: 'relative',
+    overflow: 'hidden',
+    borderRadius: '1rem',
+    background: 'linear-gradient(to right, #06b6d4, #3b82f6, #9333ea)',
+    padding: '1.5rem 3rem',
+    fontSize: '1.5rem',
+    lineHeight: '2rem',
+    fontWeight: 'bold',
+    color: 'white',
+    boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
+    transition: 'all 0.3s',
+    border: 'none',
+    cursor: 'pointer',
+  },
+  buttonSpan: {
+    position: 'relative',
+    zIndex: 10,
+    display: 'flex',
+    alignItems: 'center',
+    gap: '0.75rem',
+  },
+  svg: {
+    height: '1.5rem',
+    width: '1.5rem',
+    transition: 'transform 0.3s ease-in-out',
+  },
+  animatedGlow: {
+    position: 'absolute',
+    inset: 0,
+    transform: 'translateX(-100%)',
+    background: 'linear-gradient(to right, transparent, rgba(255, 255, 255, 0.2), transparent)',
+    transition: 'transform 1s ease-in-out',
+  },
+  benefitsContainer: {
+    marginTop: '2rem',
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    gap: '1.5rem',
+    fontSize: '0.875rem',
+    lineHeight: '1.25rem',
+    color: '#9ca3af',
+  },
+  benefitItem: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '0.5rem',
+  },
+  benefitDot: {
+      height: '0.5rem',
+      width: '0.5rem',
+      borderRadius: '9999px',
+      animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+  },
+};
+
 export default function ScrollSection() {
   const [scrollProgress, setScrollProgress] = useState(0)
+  const [isButtonHovered, setIsButtonHovered] = useState(false)
   const sectionRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -15,41 +144,49 @@ export default function ScrollSection() {
       const rect = sectionRef.current.getBoundingClientRect()
       const windowHeight = window.innerHeight
 
-      // Calcular progreso del scroll (0 a 1)
       const progress = Math.max(0, Math.min(1, (windowHeight - rect.top) / (windowHeight + rect.height)))
-
       setScrollProgress(progress)
     }
 
     window.addEventListener("scroll", handleScroll)
-    handleScroll() // Llamar una vez al montar
+    handleScroll()
 
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
+  const buttonStyle = {
+    ...styles.button,
+    transform: isButtonHovered ? 'scale(1.05)' : 'scale(1)',
+    boxShadow: isButtonHovered ? '0 10px 15px -3px rgba(6, 182, 212, 0.5)' : '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
+  };
+
+  const svgStyle = {
+    ...styles.svg,
+    transform: isButtonHovered ? 'translateX(4px)' : 'translateX(0)',
+  };
+
+  const animatedGlowStyle = {
+    ...styles.animatedGlow,
+    transform: isButtonHovered ? 'translateX(100%)' : 'translateX(-100%)',
+  }
+
   return (
-    <section
-      ref={sectionRef}
-      className="relative min-h-[200vh] bg-gradient-to-b from-gray-950 via-gray-900 to-gray-950"
-    >
-      {/* Canvas 3D fijo en viewport */}
-      <div className="sticky top-0 h-screen w-full">
+    <section ref={sectionRef} style={styles.section}>
+      <div style={styles.stickyCanvasContainer}>
         <Canvas camera={{ position: [0, 0, 15], fov: 50 }} style={{ background: "transparent" }}>
           <FloatingCards scrollProgress={scrollProgress} />
         </Canvas>
       </div>
 
-      {/* Contenido de scroll */}
-      <div className="relative z-10 flex min-h-screen items-end justify-center pb-20">
-        <div className="text-center">
-          {/* Indicador de progreso */}
-          <div className="mb-8 flex justify-center">
-            <div className="flex gap-2">
+      <div style={styles.scrollContentContainer}>
+        <div style={styles.textCenter}>
+          <div style={styles.progressIndicatorContainer}>
+            <div style={styles.progressIndicatorInner}>
               {[...Array(6)].map((_, i) => (
                 <div
                   key={i}
-                  className="h-2 w-12 rounded-full bg-gray-800 transition-all duration-300"
                   style={{
+                    ...styles.progressIndicatorBar,
                     background: scrollProgress > i * 0.15 ? "linear-gradient(to right, #22d3ee, #3b82f6)" : "#1f2937",
                   }}
                 />
@@ -57,25 +194,24 @@ export default function ScrollSection() {
             </div>
           </div>
 
-          {/* Texto motivacional */}
-          <div className="mb-12 space-y-4">
-            <h2 className="text-5xl font-bold text-white">Tu Racha Ganadora</h2>
-            <p className="text-2xl font-bold bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">
+          <div style={styles.motivationalTextContainer}>
+            <h2 style={styles.h2}>Tu Racha Ganadora</h2>
+            <p style={styles.p}>
               Empieza Aquí
             </p>
           </div>
 
-          {/* CTA Principal */}
-          <div className="relative inline-block">
-            {/* Brillo de fondo */}
-            <div className="absolute inset-0 -m-4 rounded-full bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-600 opacity-50 blur-2xl" />
-
-            {/* Botón */}
-            <button className="relative group overflow-hidden rounded-2xl bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-600 px-12 py-6 text-2xl font-bold text-white shadow-2xl transition-all duration-300 hover:scale-105 hover:shadow-cyan-500/50">
-              <span className="relative z-10 flex items-center gap-3">
+          <div style={styles.ctaContainer}>
+            <div style={styles.ctaGlow} />
+            <button
+              style={buttonStyle}
+              onMouseEnter={() => setIsButtonHovered(true)}
+              onMouseLeave={() => setIsButtonHovered(false)}
+            >
+              <span style={styles.buttonSpan}>
                 ¡REGISTRARSE AHORA!
                 <svg
-                  className="h-6 w-6 transition-transform group-hover:translate-x-1"
+                  style={svgStyle}
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -84,24 +220,21 @@ export default function ScrollSection() {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
                 </svg>
               </span>
-
-              {/* Efecto de brillo animado */}
-              <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-1000 group-hover:translate-x-full" />
+              <div style={animatedGlowStyle} />
             </button>
           </div>
 
-          {/* Beneficios */}
-          <div className="mt-8 flex flex-wrap justify-center gap-6 text-sm text-gray-400">
-            <div className="flex items-center gap-2">
-              <div className="h-2 w-2 rounded-full bg-cyan-400 animate-pulse" />
+          <div style={styles.benefitsContainer}>
+            <div style={styles.benefitItem}>
+              <div style={{ ...styles.benefitDot, backgroundColor: '#22d3ee' }} />
               <span>Bonos Instantáneos</span>
             </div>
-            <div className="flex items-center gap-2">
-              <div className="h-2 w-2 rounded-full bg-blue-400 animate-pulse" />
+            <div style={styles.benefitItem}>
+              <div style={{ ...styles.benefitDot, backgroundColor: '#60a5fa' }} />
               <span>IA Predictiva</span>
             </div>
-            <div className="flex items-center gap-2">
-              <div className="h-2 w-2 rounded-full bg-purple-400 animate-pulse" />
+            <div style={styles.benefitItem}>
+              <div style={{ ...styles.benefitDot, backgroundColor: '#a78bfa' }} />
               <span>Retiros Rápidos</span>
             </div>
           </div>
