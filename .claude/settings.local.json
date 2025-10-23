@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(del postcss.config.cjs)",
+      "Bash(npm run dev)",
+      "WebFetch(domain:betmaster-dash.preview.emergentagent.com)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
