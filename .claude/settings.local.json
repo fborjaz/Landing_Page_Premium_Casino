@@ -1,9 +1,7 @@
 {
   "permissions": {
     "allow": [
-      "Bash(del postcss.config.cjs)",
-      "Bash(npm run dev)",
-      "WebFetch(domain:betmaster-dash.preview.emergentagent.com)"
+      "Bash(npm install @react-three/drei)"
     ],
     "deny": [],
     "ask": []

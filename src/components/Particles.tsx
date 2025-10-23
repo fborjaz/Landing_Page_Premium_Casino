@@ -133,20 +133,20 @@ export default function Particles({ count = 8000 }) {
       <bufferGeometry>
         <bufferAttribute
           attach="attributes-position"
+          args={[positions, 3]}
           count={count}
-          array={positions}
           itemSize={3}
         />
         <bufferAttribute
           attach="attributes-size"
+          args={[sizes, 1]}
           count={count}
-          array={sizes}
           itemSize={1}
         />
         <bufferAttribute
           attach="attributes-alpha"
+          args={[alphas, 1]}
           count={count}
-          array={alphas}
           itemSize={1}
         />
       </bufferGeometry>
