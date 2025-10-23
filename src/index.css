@@ -2,83 +2,107 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-  html,
-  body {
-    width: 100%;
-    height: 100%;
-    overflow-x: hidden;
-    background-color: #0a0a0f;
-  }
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  background-color: #0a0a0f;
+}
 
-  body {
-    background-color: #0a0a0f;
-    color: white;
-  }
+body {
+  background-color: #0a0a0f;
+  color: white;
+}
 
-  #root {
-    width: 100%;
-    min-height: 100vh;
+#root {
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* Animación de fade in */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-@layer utilities {
-  /* Animación de fade in */
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
+.animate-fade-in {
+  animation: fadeIn 0.8s ease-out;
+}
 
-  .animate-fade-in {
-    animation: fadeIn 0.8s ease-out;
-  }
+.animate-fade-in-delayed {
+  animation: fadeIn 0.8s ease-out 0.2s both;
+}
 
-  .animate-fade-in-delayed {
-    animation: fadeIn 0.8s ease-out 0.2s both;
+/* Animación de slide up */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
   }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
-  /* Animación de slide up */
-  @keyframes slideUp {
-    from {
-      opacity: 0;
-      transform: translateY(30px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
+.animate-slide-up {
+  animation: slideUp 0.6s ease-out;
+}
 
-  .animate-slide-up {
-    animation: slideUp 0.6s ease-out;
+/* Animación de gradiente */
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
   }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
 
-  /* Animación de gradiente */
-  @keyframes gradient {
-    0% {
-      background-position: 0% 50%;
-    }
-    50% {
-      background-position: 100% 50%;
-    }
-    100% {
-      background-position: 0% 50%;
-    }
-  }
+.animate-gradient {
+  animation: gradient 3s ease infinite;
+}
 
-  .animate-gradient {
-    animation: gradient 3s ease infinite;
+/* Animaciones para las fichas flotantes */
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
   }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Glow effect para elementos neón */
+.glow-cyan {
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+}
+
+.glow-magenta {
+  box-shadow: 0 0 20px rgba(255, 0, 255, 0.5);
+}
+
+.glow-yellow {
+  box-shadow: 0 0 20px rgba(255, 255, 0, 0.5);
 }
