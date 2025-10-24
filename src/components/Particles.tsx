@@ -119,13 +119,13 @@ export default function Particles({ count = 8000 }) {
     // Efecto de repulsión del mouse (burbuja)
     pointsRef.current.position.x = THREE.MathUtils.lerp(
       pointsRef.current.position.x,
-      mouse.x * -3,
-      0.05
+      mouse.x * -5,
+      0.1
     )
     pointsRef.current.position.y = THREE.MathUtils.lerp(
       pointsRef.current.position.y,
-      mouse.y * -3,
-      0.05
+      mouse.y * -5,
+      0.1
     )
 
     // Efecto de parpadeo tipo estrellas - solo algunas parpadean
