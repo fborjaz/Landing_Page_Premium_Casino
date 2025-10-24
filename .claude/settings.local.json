@@ -1,7 +1,12 @@
 {
   "permissions": {
     "allow": [
-      "Bash(npm install @react-three/drei)"
+      "Bash(npm install @react-three/drei)",
+      "WebSearch",
+      "WebFetch(domain:www.reactbits.dev)",
+      "Bash(npm install:*)",
+      "WebFetch(domain:reactbits.dev)",
+      "Bash(npm run dev:*)"
     ],
     "deny": [],
     "ask": []

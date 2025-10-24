@@ -4,6 +4,8 @@ import Footer from "./components/Footer"
 import Scene from "./components/Scene"
 import ScrollSection from "./components/ScrollSection"
 import LoadingScreen from "./components/LoadingScreen"
+import ParticlesBackground from "./components/ParticlesBackground"
+import Particles from "./components/Particles"
 import { useState } from "react"
 
 function App() {
@@ -26,7 +28,7 @@ function App() {
         opacity: isLoading ? 0 : 1,
         transition: 'opacity 0.5s ease-in'
       }}>
-      {/* Canvas 3D - FONDO con z-index 0 */}
+      {/* Partículas de fondo - OGL (React Bits style) */}
       <div
         style={{
           position: "fixed",
@@ -34,17 +36,23 @@ function App() {
           left: 0,
           right: 0,
           bottom: 0,
-          zIndex: 0,
+          zIndex: 1,
           width: "100%",
           height: "100%",
         }}
       >
-        <Canvas
-          camera={{ position: [0, 0, 10], fov: 75 }}
-          style={{ width: "100%", height: "100%", background: "transparent" }}
-        >
-          <Scene />
-        </Canvas>
+        <ParticlesBackground
+          particleCount={200}
+          particleSpread={10}
+          speed={0.1}
+          particleColors={['#ffffff', '#ffffff']}
+          moveParticlesOnHover={true}
+          particleHoverFactor={0.5}
+          alphaParticles={false}
+          particleBaseSize={100}
+          sizeRandomness={1}
+          disableRotation={false}
+        />
       </div>
 
       {/* Contenido de la página - POR ENCIMA del canvas con z-index mayor */}
