@@ -138,14 +138,12 @@ const ParticlesBackground: React.FC<ParticlesBackgroundProps> = ({
     resize();
 
     const handleMouseMove = (e: MouseEvent) => {
-      // Usar las dimensiones de la ventana en lugar del contenedor
       const x = (e.clientX / window.innerWidth) * 2 - 1;
       const y = -(e.clientY / window.innerHeight) * 2 - 1;
       mouseRef.current = { x, y };
     };
 
     if (moveParticlesOnHover) {
-      // Escuchar el mouse en todo el documento, no solo en el contenedor
       document.addEventListener('mousemove', handleMouseMove);
     }
 

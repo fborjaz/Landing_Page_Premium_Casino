@@ -8,7 +8,7 @@ interface HeroProps {
 
 export default function Hero({ isAppLoaded }: HeroProps) {
   const [isLoaded, setIsLoaded] = useState(false)
-  const [spotsLeft, setSpotsLeft] = useState(47) // Cupos restantes
+  const [spotsLeft, setSpotsLeft] = useState(47)
   const [timeLeft, setTimeLeft] = useState({
     hours: 23,
     minutes: 45,
@@ -16,17 +16,14 @@ export default function Hero({ isAppLoaded }: HeroProps) {
   })
 
   useEffect(() => {
-    // Trigger entrance animations ONLY after App loading is complete
     if (isAppLoaded) {
       setTimeout(() => setIsLoaded(true), 300)
     }
   }, [isAppLoaded])
 
   useEffect(() => {
-    // Solo iniciar contadores cuando la app esté cargada
     if (!isAppLoaded) return
 
-    // Contador regresivo de tiempo
     const timer = setInterval(() => {
       setTimeLeft(prev => {
         let { hours, minutes, seconds } = prev
@@ -46,7 +43,6 @@ export default function Hero({ isAppLoaded }: HeroProps) {
       })
     }, 1000)
 
-    // Reducir cupos cada 2-5 minutos (simulado más rápido para demo: cada 10-20 segundos)
     const spotsTimer = setInterval(() => {
       setSpotsLeft(prev => {
         if (prev > 15) {
@@ -54,7 +50,7 @@ export default function Hero({ isAppLoaded }: HeroProps) {
         }
         return prev
       })
-    }, Math.random() * 10000 + 10000) // Entre 10 y 20 segundos
+    }, Math.random() * 10000 + 10000)
 
     return () => {
       clearInterval(timer)
@@ -73,7 +69,6 @@ export default function Hero({ isAppLoaded }: HeroProps) {
       padding: '80px 24px'
     }}>
 
-      {/* Contenedor principal centrado */}
       <div style={{
         display: 'flex',
         width: '100%',
@@ -87,7 +82,6 @@ export default function Hero({ isAppLoaded }: HeroProps) {
         transition: 'opacity 1s ease-out, transform 1s ease-out'
       }}>
 
-        {/* Badge Tech */}
         <div style={{
           display: 'inline-flex',
           alignItems: 'center',
@@ -119,7 +113,6 @@ export default function Hero({ isAppLoaded }: HeroProps) {
           </span>
         </div>
 
-        {/* Título Principal */}
         <div style={{
           display: 'flex',
           flexDirection: 'column',
@@ -159,7 +152,6 @@ export default function Hero({ isAppLoaded }: HeroProps) {
           </h2>
         </div>
 
-        {/* Descripción */}
         <p style={{
           maxWidth: '672px',
           fontSize: window.innerWidth < 768 ? '16px' : window.innerWidth < 1024 ? '20px' : '24px',
@@ -181,7 +173,6 @@ export default function Hero({ isAppLoaded }: HeroProps) {
           </span>
         </p>
 
-        {/* Features en línea */}
         <div style={{
           display: 'flex',
           flexWrap: 'wrap',
@@ -244,7 +235,6 @@ export default function Hero({ isAppLoaded }: HeroProps) {
           </div>
         </div>
 
-        {/* Contenedor de Ficha 3D + Formulario */}
         <div style={{
           display: 'flex',
           width: '100%',
@@ -259,14 +249,12 @@ export default function Hero({ isAppLoaded }: HeroProps) {
           transition: 'opacity 1.2s ease-out 1s, transform 1.2s ease-out 1s'
         }}>
 
-          {/* Ficha 3D Interactiva */}
           <div style={{
             position: 'relative',
             width: window.innerWidth < 768 ? '300px' : '400px',
             height: window.innerWidth < 768 ? '300px' : '400px',
             minWidth: window.innerWidth < 768 ? '280px' : '300px'
           }}>
-            {/* Instrucción para usuario */}
             <div style={{
               position: 'absolute',
               top: '-40px',
@@ -293,7 +281,6 @@ export default function Hero({ isAppLoaded }: HeroProps) {
               <CasinoChip />
             </Canvas>
 
-            {/* Brillo decorativo alrededor */}
             <div style={{
               position: 'absolute',
               inset: '-20px',
@@ -304,7 +291,6 @@ export default function Hero({ isAppLoaded }: HeroProps) {
             }}></div>
           </div>
 
-          {/* Formulario de Registro */}
           <div style={{
             position: 'relative',
             width: '100%',
@@ -313,14 +299,12 @@ export default function Hero({ isAppLoaded }: HeroProps) {
             padding: window.innerWidth < 768 ? '0 16px' : '0'
           }}>
 
-          {/* Contador Regresivo de Cupos - ENCIMA del formulario */}
           <div style={{
             marginBottom: '24px',
             display: 'flex',
             flexDirection: 'column',
             gap: '12px'
           }}>
-            {/* Banner de urgencia con cupos */}
             <div style={{
               position: 'relative',
               overflow: 'hidden',
@@ -333,7 +317,6 @@ export default function Hero({ isAppLoaded }: HeroProps) {
                 : '0 0 30px rgba(251, 191, 36, 0.4)',
               animation: spotsLeft <= 20 ? 'pulse 2s infinite' : 'none'
             }}>
-              {/* Efecto de brillo animado */}
               <div style={{
                 position: 'absolute',
                 top: 0,
@@ -373,7 +356,6 @@ export default function Hero({ isAppLoaded }: HeroProps) {
               </div>
             </div>
 
-            {/* Contador de tiempo */}
             <div style={{
               display: 'flex',
               justifyContent: 'center',
@@ -433,7 +415,6 @@ export default function Hero({ isAppLoaded }: HeroProps) {
             </p>
           </div>
 
-          {/* Brillo de fondo */}
           <div style={{
             pointerEvents: 'none',
             position: 'absolute',
@@ -444,7 +425,6 @@ export default function Hero({ isAppLoaded }: HeroProps) {
             filter: 'blur(40px)'
           }}></div>
 
-          {/* Contenedor del formulario */}
           <div style={{
             position: 'relative',
             borderRadius: '16px',
@@ -454,7 +434,6 @@ export default function Hero({ isAppLoaded }: HeroProps) {
             backdropFilter: 'blur(24px)'
           }}>
 
-            {/* Esquinas decorativas */}
             <div style={{
               pointerEvents: 'none',
               position: 'absolute',
@@ -501,7 +480,6 @@ export default function Hero({ isAppLoaded }: HeroProps) {
             }}></div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-              {/* Banner de oferta */}
               <div style={{
                 position: 'relative',
                 overflow: 'hidden',
@@ -541,7 +519,6 @@ export default function Hero({ isAppLoaded }: HeroProps) {
                 </div>
               </div>
 
-              {/* Formulario */}
               <form style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                 <div style={{ position: 'relative' }}>
                   <input
@@ -610,7 +587,6 @@ export default function Hero({ isAppLoaded }: HeroProps) {
                 </button>
               </form>
 
-              {/* Badge de seguridad */}
               <div style={{
                 display: 'flex',
                 alignItems: 'center',
@@ -640,14 +616,11 @@ export default function Hero({ isAppLoaded }: HeroProps) {
           </div>
 
           </div>
-          {/* Fin del Formulario de Registro */}
 
         </div>
-        {/* Fin del contenedor Ficha + Formulario */}
 
       </div>
 
-      {/* Indicador de scroll hacia abajo */}
       <div style={{
         position: 'absolute',
         bottom: '40px',

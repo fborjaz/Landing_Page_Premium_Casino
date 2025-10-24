@@ -13,7 +13,6 @@ export default function ScrollSection() {
     let rafId: number | null = null
 
     const handleScroll = () => {
-      // Usar requestAnimationFrame para scroll más suave
       if (rafId) {
         cancelAnimationFrame(rafId)
       }
@@ -27,24 +26,18 @@ export default function ScrollSection() {
         const windowHeight = window.innerHeight
         const sectionHeight = rect.height
 
-        // Detectar cuando la sección es visible
         if (rect.top < windowHeight && rect.bottom > 0) {
           setIsVisible(true)
         }
 
-        // Las cards NO deben aparecer hasta que la sección esté en el viewport
-        // rect.top = 0 significa que el top de la sección está en el top del viewport
         if (rect.top > 0) {
-          // La sección aún no ha llegado, scrollProgress = 0
           setScrollProgress(0)
           return
         }
 
-        // Posición absoluta de la sección desde el top del documento
         const sectionTop = window.scrollY + rect.top
         const sectionBottom = sectionTop + sectionHeight
 
-        // El scroll progress empieza cuando la sección entra (rect.top <= 0)
         const scrollStart = sectionTop
         const scrollEnd = sectionBottom
         const scrollRange = scrollEnd - scrollStart
@@ -58,7 +51,7 @@ export default function ScrollSection() {
     }
 
     window.addEventListener("scroll", handleScroll, { passive: true })
-    handleScroll() // Llamar una vez al montar
+    handleScroll()
 
     return () => {
       window.removeEventListener("scroll", handleScroll)
@@ -73,40 +66,36 @@ export default function ScrollSection() {
       ref={sectionRef}
       style={{
         position: 'relative',
-        minHeight: '200vh',  // REVERTIDO: Altura original
+        minHeight: '200vh',
         background: 'transparent'
       }}
     >
-      {/* Canvas 3D FIJO en viewport - NO se mueve NUNCA */}
       <div style={{
-        position: 'fixed',  // FIXED en lugar de sticky
+        position: 'fixed',
         top: 0,
         left: 0,
         right: 0,
         height: '100vh',
         width: '100%',
-        zIndex: scrollProgress > 0 ? 1 : -1,  // Detrás de todo cuando scrollProgress = 0
-        pointerEvents: scrollProgress > 0 ? 'auto' : 'none',  // Sin eventos cuando está en Hero
-        opacity: scrollProgress > 0 ? 1 : 0  // Invisible cuando está en Hero
+        zIndex: scrollProgress > 0 ? 1 : -1,
+        pointerEvents: scrollProgress > 0 ? 'auto' : 'none',
+        opacity: scrollProgress > 0 ? 1 : 0
       }}>
         <Canvas camera={{ position: [0, 0, 12], fov: 60 }} style={{ background: "transparent" }}>
           <FloatingCards scrollProgress={scrollProgress} />
         </Canvas>
       </div>
 
-      {/* Contenido de scroll - empieza desde ABAJO del viewport y sube con el scroll */}
       <div style={{
         position: 'absolute',
-        bottom: 0,  // Pegado al fondo de la sección
+        bottom: 0,
         left: 0,
         right: 0,
-        zIndex: 20,  // z-index alto para cubrir las cards
-        pointerEvents: 'none',  // Permitir que el mouse interactúe con el canvas 3D
-        // REVERTIDO: Fórmula original que funcionaba bien
+        zIndex: 20,
+        pointerEvents: 'none',
         transform: scrollProgress > 0.26
           ? `translate3d(0, ${Math.max(0, 100 - ((scrollProgress - 0.26) * 135))}vh, 0)`
           : 'translate3d(0, 100vh, 0)',
-        // Optimizaciones de GPU para suavidad (sin romper funcionalidad)
         backfaceVisibility: 'hidden',
         WebkitBackfaceVisibility: 'hidden'
       }}>
@@ -118,14 +107,12 @@ export default function ScrollSection() {
           padding: '0',
           minHeight: '100vh'
         }}>
-          {/* Fondo oscuro que cubre las cards - SUBE gradualmente con el contenido */}
           <div style={{
             position: 'absolute',
             top: 0,
             left: 0,
             right: 0,
             bottom: 0,
-            // Gradiente que se intensifica conforme sube el contenido
             background: scrollProgress > 0.26
               ? `linear-gradient(to bottom,
                   transparent 0%,
@@ -137,7 +124,6 @@ export default function ScrollSection() {
             pointerEvents: 'none'
           }} />
 
-          {/* DEBUG: Mostrar scroll progress en pantalla - FUERA del contenido que se oculta */}
           <div style={{
             position: 'fixed',
             top: '20px',
@@ -169,7 +155,6 @@ export default function ScrollSection() {
             </div>
           </div>
 
-          {/* Contenido real - visible siempre pero empieza abajo */}
           <div style={{
             position: 'relative',
             zIndex: 2,
@@ -178,7 +163,6 @@ export default function ScrollSection() {
             pointerEvents: 'auto'
           }}>
 
-          {/* Indicador de progreso */}
           <div style={{
             marginBottom: window.innerWidth < 768 ? '24px' : '32px',
             display: 'flex',
@@ -186,7 +170,6 @@ export default function ScrollSection() {
           }}>
             <div style={{ display: 'flex', gap: window.innerWidth < 768 ? '6px' : '8px' }}>
               {[...Array(6)].map((_, i) => {
-                // Cada card se completa en: (i * 0.04) + 0.06
                 const cardFullyVisibleAt = (i * 0.04) + 0.06
                 return (
                   <div
@@ -206,7 +189,6 @@ export default function ScrollSection() {
             </div>
           </div>
 
-          {/* Texto motivacional */}
           <div style={{ marginBottom: window.innerWidth < 768 ? '32px' : '48px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
             <h2 style={{
               fontSize: window.innerWidth < 768 ? '32px' : window.innerWidth < 1024 ? '40px' : '48px',
@@ -227,9 +209,7 @@ export default function ScrollSection() {
             </p>
           </div>
 
-          {/* CTA Principal */}
           <div style={{ position: 'relative', display: 'inline-block' }}>
-            {/* Brillo de fondo */}
             <div style={{
               position: 'absolute',
               inset: '-16px',
@@ -240,7 +220,6 @@ export default function ScrollSection() {
               pointerEvents: 'none'
             }} />
 
-            {/* Botón */}
             <button
               onMouseEnter={() => setIsHovered(true)}
               onMouseLeave={() => setIsHovered(false)}
@@ -286,7 +265,6 @@ export default function ScrollSection() {
                 </svg>
               </span>
 
-              {/* Efecto de brillo animado */}
               <div style={{
                 position: 'absolute',
                 inset: 0,
@@ -298,7 +276,6 @@ export default function ScrollSection() {
             </button>
           </div>
 
-          {/* Beneficios */}
           <div style={{
             marginTop: window.innerWidth < 768 ? '24px' : '32px',
             display: 'flex',
@@ -339,9 +316,9 @@ export default function ScrollSection() {
               <span>Retiros Rápidos</span>
             </div>
           </div>
-          </div> {/* Cierre del contenido real */}
-        </div> {/* Cierre del contenedor con fondo */}
-      </div> {/* Cierre del contenido de scroll */}
+          </div>
+        </div>
+      </div>
     </section>
   )
 }

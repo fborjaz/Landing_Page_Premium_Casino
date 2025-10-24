@@ -1,6 +1,3 @@
-// En: src/components/CasinoChip.tsx
-// Ficha de casino 3D dorada con efectos neón
-
 import { useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { OrbitControls, Text } from '@react-three/drei'
@@ -10,9 +7,8 @@ export default function CasinoChip() {
   const chipRef = useRef<THREE.Group>(null)
   const edgeRingRef = useRef<THREE.Mesh>(null)
 
-  // Animación solo del anillo neón (sin rotar la ficha)
+  // Animación de pulsación del anillo neón
   useFrame((state) => {
-    // Pulsación en el anillo neón
     if (edgeRingRef.current) {
       const time = state.clock.getElapsedTime()
       const material = edgeRingRef.current.material as THREE.MeshStandardMaterial
@@ -22,7 +18,6 @@ export default function CasinoChip() {
 
   return (
     <>
-      {/* Controles para rotación 360° completa con mouse */}
       <OrbitControls
         enableZoom={false}
         enablePan={false}
@@ -30,37 +25,23 @@ export default function CasinoChip() {
         rotateSpeed={1}
       />
 
-      {/* Sistema de iluminación premium para máximo brillo */}
+      {/* Sistema de iluminación */}
       <ambientLight intensity={1.5} />
-
-      {/* Luz hemisférica para ambiente dorado */}
       <hemisphereLight args={['#fbbf24', '#1e293b', 2]} />
-
-      {/* Luz principal frontal ultra intensa */}
       <directionalLight position={[0, 0, 12]} intensity={5} color="#ffffff" castShadow />
-
-      {/* Luces direccionales laterales para reflejos brillantes */}
       <directionalLight position={[10, 5, 8]} intensity={4} color="#ffffff" />
       <directionalLight position={[-10, 5, 8]} intensity={4} color="#ffffff" />
       <directionalLight position={[0, -5, 8]} intensity={3} color="#ffffff" />
-
-      {/* Luz superior dramática */}
       <directionalLight position={[0, 10, 3]} intensity={3.5} color="#ffffff" />
-
-      {/* Point lights dorados estratégicos para brillo metálico */}
       <pointLight position={[0, 4, 10]} intensity={5} color="#fbbf24" />
       <pointLight position={[6, 3, 6]} intensity={3.5} color="#fbbf24" />
       <pointLight position={[-6, 3, 6]} intensity={3.5} color="#fbbf24" />
       <pointLight position={[0, -3, 6]} intensity={3} color="#fcd34d" />
-
-      {/* Spotlights para brillos dramáticos */}
       <spotLight position={[5, 5, 5]} intensity={4} angle={0.5} penumbra={0.5} color="#ffffff" />
       <spotLight position={[-5, 5, 5]} intensity={4} angle={0.5} penumbra={0.5} color="#ffffff" />
 
-      {/* Grupo de la ficha */}
       <group ref={chipRef}>
-
-        {/* Cuerpo principal - Dorado ultra brillante con máximo reflejo */}
+        {/* Cuerpo principal */}
         <mesh castShadow receiveShadow>
           <cylinderGeometry args={[2, 2, 0.2, 64]} />
           <meshPhysicalMaterial
@@ -79,7 +60,7 @@ export default function CasinoChip() {
           />
         </mesh>
 
-        {/* Estriado del borde brillante */}
+        {/* Estriado del borde */}
         {Array.from({ length: 48 }).map((_, i) => {
           const angle = (i / 48) * Math.PI * 2
           const x = Math.cos(angle) * 2.02
@@ -105,7 +86,7 @@ export default function CasinoChip() {
           )
         })}
 
-        {/* Anillo cyan del borde - pulsante ultra brillante (rotado para no tapar el texto) */}
+        {/* Anillo neón cyan pulsante */}
         <mesh ref={edgeRingRef} position={[0, 0, 0]} rotation={[Math.PI / 2, 0, 0]}>
           <torusGeometry args={[2.02, 0.04, 16, 64]} />
           <meshStandardMaterial
@@ -118,7 +99,7 @@ export default function CasinoChip() {
           />
         </mesh>
 
-        {/* Diamantes realistas brillantes - cara superior */}
+        {/* Diamantes - cara superior */}
         {Array.from({ length: 8 }).map((_, i) => {
           const angle = (i / 8) * Math.PI * 2
           const x = Math.cos(angle) * 1.3
@@ -126,7 +107,6 @@ export default function CasinoChip() {
 
           return (
             <group key={i} position={[x, 0.13, z]} rotation={[0, angle, 0]}>
-              {/* Parte superior del diamante - pirámide cristalina ultra brillante */}
               <mesh rotation={[0, Math.PI / 4, 0]} castShadow receiveShadow>
                 <coneGeometry args={[0.18, 0.1, 8]} />
                 <meshPhysicalMaterial
@@ -149,7 +129,6 @@ export default function CasinoChip() {
                 />
               </mesh>
 
-              {/* Parte inferior del diamante - cono invertido ultra brillante */}
               <mesh rotation={[Math.PI, Math.PI / 4, 0]} position={[0, -0.05, 0]} castShadow receiveShadow>
                 <coneGeometry args={[0.18, 0.15, 8]} />
                 <meshPhysicalMaterial
@@ -172,7 +151,6 @@ export default function CasinoChip() {
                 />
               </mesh>
 
-              {/* Punto de brillo brillante */}
               <mesh position={[0, 0.1, 0]}>
                 <sphereGeometry args={[0.025, 8, 8]} />
                 <meshBasicMaterial color="#ffffff" />
@@ -181,7 +159,7 @@ export default function CasinoChip() {
           )
         })}
 
-        {/* Diamantes realistas brillantes - cara inferior */}
+        {/* Diamantes - cara inferior */}
         {Array.from({ length: 8 }).map((_, i) => {
           const angle = (i / 8) * Math.PI * 2
           const x = Math.cos(angle) * 1.3
@@ -189,7 +167,6 @@ export default function CasinoChip() {
 
           return (
             <group key={`bottom-${i}`} position={[x, -0.13, z]} rotation={[Math.PI, angle, 0]}>
-              {/* Parte superior del diamante - pirámide cristalina ultra brillante */}
               <mesh rotation={[0, Math.PI / 4, 0]} castShadow receiveShadow>
                 <coneGeometry args={[0.18, 0.1, 8]} />
                 <meshPhysicalMaterial
@@ -212,7 +189,6 @@ export default function CasinoChip() {
                 />
               </mesh>
 
-              {/* Parte inferior del diamante - cono invertido ultra brillante */}
               <mesh rotation={[Math.PI, Math.PI / 4, 0]} position={[0, -0.05, 0]} castShadow receiveShadow>
                 <coneGeometry args={[0.18, 0.15, 8]} />
                 <meshPhysicalMaterial
@@ -235,7 +211,6 @@ export default function CasinoChip() {
                 />
               </mesh>
 
-              {/* Punto de brillo brillante */}
               <mesh position={[0, 0.1, 0]}>
                 <sphereGeometry args={[0.025, 8, 8]} />
                 <meshBasicMaterial color="#ffffff" />
@@ -243,16 +218,6 @@ export default function CasinoChip() {
             </group>
           )
         })}
-
-        {/* Círculo central superior - Logo/Valor */}
-        <mesh position={[0, 0.11, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-          <circleGeometry args={[0.9, 64]} />
-          <meshStandardMaterial
-            color="#1e293b"
-            metalness={0.6}
-            roughness={0.25}
-          />
-        </mesh>
 
         {/* Círculo central superior */}
         <mesh position={[0, 0.11, 0]} rotation={[-Math.PI / 2, 0, 0]}>
@@ -264,7 +229,7 @@ export default function CasinoChip() {
           />
         </mesh>
 
-        {/* Anillo dorado alrededor de $500 - superior ultra brillante */}
+        {/* Anillo dorado superior */}
         <mesh position={[0, 0.105, 0]} rotation={[-Math.PI / 2, 0, 0]} castShadow receiveShadow>
           <ringGeometry args={[0.85, 0.95, 64]} />
           <meshPhysicalMaterial
@@ -292,7 +257,7 @@ export default function CasinoChip() {
           />
         </mesh>
 
-        {/* Anillo dorado alrededor de AI - inferior ultra brillante */}
+        {/* Anillo dorado inferior */}
         <mesh position={[0, -0.105, 0]} rotation={[Math.PI / 2, 0, 0]} castShadow receiveShadow>
           <ringGeometry args={[0.85, 0.95, 64]} />
           <meshPhysicalMaterial
@@ -310,7 +275,7 @@ export default function CasinoChip() {
           />
         </mesh>
 
-        {/* Texto 3D en la cara superior */}
+        {/* Texto cara superior */}
         <Text
           position={[0, 0.12, 0]}
           rotation={[-Math.PI / 2, 0, 0]}
@@ -324,7 +289,7 @@ export default function CasinoChip() {
           $500
         </Text>
 
-        {/* Texto 3D en la cara inferior */}
+        {/* Texto cara inferior */}
         <Text
           position={[0, -0.12, 0]}
           rotation={[Math.PI / 2, 0, 0]}
@@ -337,7 +302,6 @@ export default function CasinoChip() {
         >
           AI
         </Text>
-
       </group>
     </>
   )

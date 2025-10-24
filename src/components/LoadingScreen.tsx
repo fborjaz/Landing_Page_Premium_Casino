@@ -1,4 +1,3 @@
-// Pantalla de carga temática de casino con animaciones premium
 import { useState, useEffect } from 'react'
 
 export default function LoadingScreen({ onLoadComplete }: { onLoadComplete: () => void }) {
@@ -6,22 +5,18 @@ export default function LoadingScreen({ onLoadComplete }: { onLoadComplete: () =
   const [dots, setDots] = useState('')
 
   useEffect(() => {
-    // Animación de puntos suspensivos
     const dotsInterval = setInterval(() => {
       setDots(prev => (prev.length >= 3 ? '' : prev + '.'))
     }, 500)
 
-    // Simulación de progreso de carga
     const progressInterval = setInterval(() => {
       setProgress(prev => {
         if (prev >= 100) {
           clearInterval(progressInterval)
           clearInterval(dotsInterval)
-          // Delay antes de ocultar el loader para transición suave
           setTimeout(() => onLoadComplete(), 500)
           return 100
         }
-        // Progreso más rápido al inicio, más lento al final (efecto realista)
         const increment = prev < 50 ? Math.random() * 15 + 10 : Math.random() * 5 + 2
         return Math.min(prev + increment, 100)
       })
@@ -50,7 +45,6 @@ export default function LoadingScreen({ onLoadComplete }: { onLoadComplete: () =
       transition: 'opacity 0.5s ease-out'
     }}>
 
-      {/* Partículas de fondo */}
       <div style={{
         position: 'absolute',
         top: 0,
@@ -79,7 +73,6 @@ export default function LoadingScreen({ onLoadComplete }: { onLoadComplete: () =
         ))}
       </div>
 
-      {/* Contenedor principal */}
       <div style={{
         position: 'relative',
         display: 'flex',
@@ -89,13 +82,11 @@ export default function LoadingScreen({ onLoadComplete }: { onLoadComplete: () =
         padding: '40px'
       }}>
 
-        {/* Logo/Icono de Casino Animado */}
         <div style={{
           position: 'relative',
           width: '120px',
           height: '120px'
         }}>
-          {/* Círculo exterior pulsante */}
           <div style={{
             position: 'absolute',
             inset: '-20px',
@@ -104,7 +95,6 @@ export default function LoadingScreen({ onLoadComplete }: { onLoadComplete: () =
             animation: 'pulse 2s ease-in-out infinite'
           }} />
 
-          {/* Ficha de casino animada */}
           <div style={{
             position: 'relative',
             width: '120px',
@@ -118,7 +108,6 @@ export default function LoadingScreen({ onLoadComplete }: { onLoadComplete: () =
             boxShadow: '0 0 40px rgba(34, 211, 238, 0.6), inset 0 0 20px rgba(251, 191, 36, 0.5)',
             animation: 'spin 3s linear infinite'
           }}>
-            {/* Borde interior */}
             <div style={{
               position: 'absolute',
               inset: '8px',
@@ -126,7 +115,6 @@ export default function LoadingScreen({ onLoadComplete }: { onLoadComplete: () =
               border: '2px dashed rgba(34, 211, 238, 0.5)'
             }} />
 
-            {/* Símbolo de casino */}
             <div style={{
               fontSize: '48px',
               fontWeight: '900',
@@ -139,7 +127,6 @@ export default function LoadingScreen({ onLoadComplete }: { onLoadComplete: () =
               $
             </div>
 
-            {/* Diamantes en las esquinas */}
             {[0, 90, 180, 270].map((angle, i) => (
               <div
                 key={i}
@@ -157,7 +144,6 @@ export default function LoadingScreen({ onLoadComplete }: { onLoadComplete: () =
           </div>
         </div>
 
-        {/* Texto de carga */}
         <div style={{
           textAlign: 'center',
           display: 'flex',
@@ -188,14 +174,12 @@ export default function LoadingScreen({ onLoadComplete }: { onLoadComplete: () =
           </p>
         </div>
 
-        {/* Barra de progreso */}
         <div style={{
           width: window.innerWidth < 768 ? '280px' : '400px',
           display: 'flex',
           flexDirection: 'column',
           gap: '12px'
         }}>
-          {/* Barra de fondo */}
           <div style={{
             position: 'relative',
             width: '100%',
@@ -205,7 +189,6 @@ export default function LoadingScreen({ onLoadComplete }: { onLoadComplete: () =
             overflow: 'hidden',
             border: '1px solid rgba(34, 211, 238, 0.3)'
           }}>
-            {/* Barra de progreso con gradiente */}
             <div style={{
               position: 'absolute',
               top: 0,
@@ -217,7 +200,6 @@ export default function LoadingScreen({ onLoadComplete }: { onLoadComplete: () =
               transition: 'width 0.3s ease-out',
               boxShadow: '0 0 20px rgba(34, 211, 238, 0.6)'
             }}>
-              {/* Efecto de brillo deslizante */}
               <div style={{
                 position: 'absolute',
                 top: 0,
@@ -230,7 +212,6 @@ export default function LoadingScreen({ onLoadComplete }: { onLoadComplete: () =
             </div>
           </div>
 
-          {/* Porcentaje */}
           <div style={{
             textAlign: 'center',
             fontSize: '24px',
@@ -243,7 +224,6 @@ export default function LoadingScreen({ onLoadComplete }: { onLoadComplete: () =
           </div>
         </div>
 
-        {/* Mensajes de carga dinámicos */}
         <div style={{
           fontSize: '14px',
           color: '#6b7280',
@@ -257,7 +237,6 @@ export default function LoadingScreen({ onLoadComplete }: { onLoadComplete: () =
           {progress >= 90 && '✨ ¡Casi listo para ganar!'}
         </div>
 
-        {/* Fichas flotantes decorativas */}
         <div style={{
           position: 'absolute',
           top: '50%',
