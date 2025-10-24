@@ -1,7 +1,67 @@
 import { Canvas } from '@react-three/fiber'
 import CasinoChip from './CasinoChip'
+import { useState, useEffect } from 'react'
 
-export default function Hero() {
+interface HeroProps {
+  isAppLoaded: boolean
+}
+
+export default function Hero({ isAppLoaded }: HeroProps) {
+  const [isLoaded, setIsLoaded] = useState(false)
+  const [spotsLeft, setSpotsLeft] = useState(47) // Cupos restantes
+  const [timeLeft, setTimeLeft] = useState({
+    hours: 23,
+    minutes: 45,
+    seconds: 30
+  })
+
+  useEffect(() => {
+    // Trigger entrance animations ONLY after App loading is complete
+    if (isAppLoaded) {
+      setTimeout(() => setIsLoaded(true), 300)
+    }
+  }, [isAppLoaded])
+
+  useEffect(() => {
+    // Solo iniciar contadores cuando la app esté cargada
+    if (!isAppLoaded) return
+
+    // Contador regresivo de tiempo
+    const timer = setInterval(() => {
+      setTimeLeft(prev => {
+        let { hours, minutes, seconds } = prev
+
+        if (seconds > 0) {
+          seconds--
+        } else if (minutes > 0) {
+          minutes--
+          seconds = 59
+        } else if (hours > 0) {
+          hours--
+          minutes = 59
+          seconds = 59
+        }
+
+        return { hours, minutes, seconds }
+      })
+    }, 1000)
+
+    // Reducir cupos cada 2-5 minutos (simulado más rápido para demo: cada 10-20 segundos)
+    const spotsTimer = setInterval(() => {
+      setSpotsLeft(prev => {
+        if (prev > 15) {
+          return prev - 1
+        }
+        return prev
+      })
+    }, Math.random() * 10000 + 10000) // Entre 10 y 20 segundos
+
+    return () => {
+      clearInterval(timer)
+      clearInterval(spotsTimer)
+    }
+  }, [isAppLoaded])
+
   return (
     <section style={{
       position: 'relative',
@@ -20,8 +80,11 @@ export default function Hero() {
         maxWidth: '1200px',
         flexDirection: 'column',
         alignItems: 'center',
-        gap: '48px',
-        textAlign: 'center'
+        gap: window.innerWidth < 768 ? '32px' : '48px',
+        textAlign: 'center',
+        opacity: isLoaded ? 1 : 0,
+        transform: isLoaded ? 'translateY(0)' : 'translateY(50px)',
+        transition: 'opacity 1s ease-out, transform 1s ease-out'
       }}>
 
         {/* Badge Tech */}
@@ -33,7 +96,10 @@ export default function Hero() {
           border: '1px solid rgba(6, 182, 212, 0.3)',
           backgroundColor: 'rgba(6, 182, 212, 0.1)',
           padding: '12px 24px',
-          backdropFilter: 'blur(4px)'
+          backdropFilter: 'blur(4px)',
+          opacity: isLoaded ? 1 : 0,
+          transform: isLoaded ? 'scale(1)' : 'scale(0.8)',
+          transition: 'opacity 0.8s ease-out 0.2s, transform 0.8s ease-out 0.2s'
         }}>
           <div style={{
             height: '8px',
@@ -54,9 +120,16 @@ export default function Hero() {
         </div>
 
         {/* Título Principal */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '16px',
+          opacity: isLoaded ? 1 : 0,
+          transform: isLoaded ? 'translateY(0)' : 'translateY(30px)',
+          transition: 'opacity 1s ease-out 0.4s, transform 1s ease-out 0.4s'
+        }}>
           <h1 style={{
-            fontSize: '72px',
+            fontSize: window.innerWidth < 768 ? '36px' : window.innerWidth < 1024 ? '56px' : '72px',
             fontWeight: '700',
             lineHeight: '1.1',
             color: 'white'
@@ -66,16 +139,16 @@ export default function Hero() {
               Apuestas
               <div style={{
                 position: 'absolute',
-                bottom: '-12px',
+                bottom: window.innerWidth < 768 ? '-8px' : '-12px',
                 left: '0',
                 right: '0',
-                height: '4px',
+                height: window.innerWidth < 768 ? '3px' : '4px',
                 background: 'linear-gradient(to right, transparent, #22d3ee, transparent)'
               }}></div>
             </span>
           </h1>
           <h2 style={{
-            fontSize: '64px',
+            fontSize: window.innerWidth < 768 ? '32px' : window.innerWidth < 1024 ? '48px' : '64px',
             fontWeight: '700',
             background: 'linear-gradient(to right, #22d3ee, #3b82f6, #9333ea)',
             WebkitBackgroundClip: 'text',
@@ -89,9 +162,13 @@ export default function Hero() {
         {/* Descripción */}
         <p style={{
           maxWidth: '672px',
-          fontSize: '24px',
+          fontSize: window.innerWidth < 768 ? '16px' : window.innerWidth < 1024 ? '20px' : '24px',
           lineHeight: '1.6',
-          color: '#d1d5db'
+          color: '#d1d5db',
+          padding: window.innerWidth < 768 ? '0 16px' : '0',
+          opacity: isLoaded ? 1 : 0,
+          transform: isLoaded ? 'translateY(0)' : 'translateY(30px)',
+          transition: 'opacity 1s ease-out 0.6s, transform 1s ease-out 0.6s'
         }}>
           Accede a análisis predictivos y promociones exclusivas antes que nadie.
           <span style={{
@@ -112,7 +189,10 @@ export default function Hero() {
           justifyContent: 'center',
           gap: '24px',
           fontSize: '14px',
-          color: '#d1d5db'
+          color: '#d1d5db',
+          opacity: isLoaded ? 1 : 0,
+          transform: isLoaded ? 'translateY(0)' : 'translateY(20px)',
+          transition: 'opacity 0.8s ease-out 0.8s, transform 0.8s ease-out 0.8s'
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <div style={{
@@ -169,18 +249,22 @@ export default function Hero() {
           display: 'flex',
           width: '100%',
           maxWidth: '1000px',
-          gap: '48px',
+          gap: window.innerWidth < 768 ? '32px' : '48px',
           alignItems: 'center',
           justifyContent: 'center',
-          flexWrap: 'wrap'
+          flexWrap: 'wrap',
+          flexDirection: window.innerWidth < 768 ? 'column' : 'row',
+          opacity: isLoaded ? 1 : 0,
+          transform: isLoaded ? 'scale(1)' : 'scale(0.95)',
+          transition: 'opacity 1.2s ease-out 1s, transform 1.2s ease-out 1s'
         }}>
 
           {/* Ficha 3D Interactiva */}
           <div style={{
             position: 'relative',
-            width: '400px',
-            height: '400px',
-            minWidth: '300px'
+            width: window.innerWidth < 768 ? '300px' : '400px',
+            height: window.innerWidth < 768 ? '300px' : '400px',
+            minWidth: window.innerWidth < 768 ? '280px' : '300px'
           }}>
             {/* Instrucción para usuario */}
             <div style={{
@@ -221,7 +305,133 @@ export default function Hero() {
           </div>
 
           {/* Formulario de Registro */}
-          <div style={{ position: 'relative', width: '100%', maxWidth: '448px', flex: '1' }}>
+          <div style={{
+            position: 'relative',
+            width: '100%',
+            maxWidth: '448px',
+            flex: '1',
+            padding: window.innerWidth < 768 ? '0 16px' : '0'
+          }}>
+
+          {/* Contador Regresivo de Cupos - ENCIMA del formulario */}
+          <div style={{
+            marginBottom: '24px',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '12px'
+          }}>
+            {/* Banner de urgencia con cupos */}
+            <div style={{
+              position: 'relative',
+              overflow: 'hidden',
+              borderRadius: '12px',
+              background: spotsLeft <= 20 ? 'linear-gradient(135deg, #dc2626, #991b1b)' : 'linear-gradient(135deg, #f59e0b, #d97706)',
+              padding: '16px',
+              border: `2px solid ${spotsLeft <= 20 ? '#ef4444' : '#fbbf24'}`,
+              boxShadow: spotsLeft <= 20
+                ? '0 0 30px rgba(239, 68, 68, 0.6), 0 10px 20px rgba(220, 38, 38, 0.4)'
+                : '0 0 30px rgba(251, 191, 36, 0.4)',
+              animation: spotsLeft <= 20 ? 'pulse 2s infinite' : 'none'
+            }}>
+              {/* Efecto de brillo animado */}
+              <div style={{
+                position: 'absolute',
+                top: 0,
+                left: '-100%',
+                width: '100%',
+                height: '100%',
+                background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent)',
+                animation: 'slideRight 3s infinite'
+              }} />
+
+              <div style={{ position: 'relative', zIndex: 10, textAlign: 'center' }}>
+                <p style={{
+                  fontSize: '14px',
+                  fontWeight: '700',
+                  color: 'white',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.05em',
+                  marginBottom: '8px'
+                }}>
+                  {spotsLeft <= 20 ? '🔥 ¡ÚLTIMOS CUPOS!' : '⚡ CUPOS LIMITADOS'}
+                </p>
+                <p style={{
+                  fontSize: window.innerWidth < 768 ? '24px' : '32px',
+                  fontWeight: '900',
+                  color: 'white',
+                  textShadow: '0 2px 10px rgba(0,0,0,0.3)'
+                }}>
+                  Solo quedan <span style={{
+                    display: 'inline-block',
+                    minWidth: window.innerWidth < 768 ? '50px' : '60px',
+                    padding: '4px 12px',
+                    background: 'rgba(0,0,0,0.3)',
+                    borderRadius: '8px',
+                    border: '2px solid rgba(255,255,255,0.3)'
+                  }}>{spotsLeft}</span> cupos
+                </p>
+              </div>
+            </div>
+
+            {/* Contador de tiempo */}
+            <div style={{
+              display: 'flex',
+              justifyContent: 'center',
+              gap: '12px',
+              padding: '16px',
+              background: 'rgba(0,0,0,0.4)',
+              borderRadius: '12px',
+              border: '1px solid rgba(34, 211, 238, 0.3)'
+            }}>
+              <div style={{ textAlign: 'center' }}>
+                <div style={{
+                  fontSize: window.innerWidth < 768 ? '24px' : '32px',
+                  fontWeight: '700',
+                  color: '#22d3ee',
+                  fontFamily: 'monospace',
+                  minWidth: window.innerWidth < 768 ? '40px' : '50px'
+                }}>
+                  {String(timeLeft.hours).padStart(2, '0')}
+                </div>
+                <div style={{ fontSize: '10px', color: '#9ca3af', marginTop: '4px' }}>HORAS</div>
+              </div>
+              <div style={{ fontSize: '32px', color: '#22d3ee', fontWeight: '700' }}>:</div>
+              <div style={{ textAlign: 'center' }}>
+                <div style={{
+                  fontSize: window.innerWidth < 768 ? '24px' : '32px',
+                  fontWeight: '700',
+                  color: '#22d3ee',
+                  fontFamily: 'monospace',
+                  minWidth: window.innerWidth < 768 ? '40px' : '50px'
+                }}>
+                  {String(timeLeft.minutes).padStart(2, '0')}
+                </div>
+                <div style={{ fontSize: '10px', color: '#9ca3af', marginTop: '4px' }}>MINUTOS</div>
+              </div>
+              <div style={{ fontSize: '32px', color: '#22d3ee', fontWeight: '700' }}>:</div>
+              <div style={{ textAlign: 'center' }}>
+                <div style={{
+                  fontSize: window.innerWidth < 768 ? '24px' : '32px',
+                  fontWeight: '700',
+                  color: '#22d3ee',
+                  fontFamily: 'monospace',
+                  minWidth: window.innerWidth < 768 ? '40px' : '50px'
+                }}>
+                  {String(timeLeft.seconds).padStart(2, '0')}
+                </div>
+                <div style={{ fontSize: '10px', color: '#9ca3af', marginTop: '4px' }}>SEGUNDOS</div>
+              </div>
+            </div>
+
+            <p style={{
+              textAlign: 'center',
+              fontSize: '12px',
+              color: '#9ca3af',
+              fontStyle: 'italic'
+            }}>
+              ⏰ La oferta termina cuando se acaben los cupos
+            </p>
+          </div>
 
           {/* Brillo de fondo */}
           <div style={{
@@ -435,6 +645,34 @@ export default function Hero() {
         </div>
         {/* Fin del contenedor Ficha + Formulario */}
 
+      </div>
+
+      {/* Indicador de scroll hacia abajo */}
+      <div style={{
+        position: 'absolute',
+        bottom: '40px',
+        left: '50%',
+        transform: 'translateX(-50%)',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        gap: '12px',
+        opacity: isLoaded ? 1 : 0,
+        animation: isLoaded ? 'bounce 2s infinite' : 'none',
+        transition: 'opacity 1s ease-out 1.5s'
+      }}>
+        <span style={{
+          fontSize: '14px',
+          fontWeight: '600',
+          color: '#22d3ee',
+          textTransform: 'uppercase',
+          letterSpacing: '0.1em'
+        }}>
+          Scroll para ver más
+        </span>
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#22d3ee" strokeWidth="2">
+          <path d="M12 5v14M19 12l-7 7-7-7"/>
+        </svg>
       </div>
     </section>
   )

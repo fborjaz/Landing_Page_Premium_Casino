@@ -3,10 +3,29 @@ import Hero from "./components/Hero"
 import Footer from "./components/Footer"
 import Scene from "./components/Scene"
 import ScrollSection from "./components/ScrollSection"
+import LoadingScreen from "./components/LoadingScreen"
+import { useState } from "react"
 
 function App() {
+  const [isLoading, setIsLoading] = useState(true)
+
+  const handleLoadComplete = () => {
+    setIsLoading(false)
+  }
+
   return (
-    <div style={{ position: "relative", minHeight: "100vh", backgroundColor: "#0a0a0f" }}>
+    <>
+      {/* Pantalla de carga */}
+      {isLoading && <LoadingScreen onLoadComplete={handleLoadComplete} />}
+
+      {/* Contenido principal */}
+      <div style={{
+        position: "relative",
+        minHeight: "100vh",
+        backgroundColor: "#0a0a0f",
+        opacity: isLoading ? 0 : 1,
+        transition: 'opacity 0.5s ease-in'
+      }}>
       {/* Canvas 3D - FONDO con z-index 0 */}
       <div
         style={{
@@ -29,12 +48,13 @@ function App() {
       </div>
 
       {/* Contenido de la página - POR ENCIMA del canvas con z-index mayor */}
-      <main style={{ position: "relative", zIndex: 10 }} className="text-white">
-        <Hero />
+      <main style={{ position: "relative", zIndex: 10, color: "white" }}>
+        <Hero isAppLoaded={!isLoading} />
         <ScrollSection />
         <Footer />
       </main>
-    </div>
+      </div>
+    </>
   )
 }
 

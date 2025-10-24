@@ -8,17 +8,44 @@
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+  /* Optimización de scroll */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 html,
 body {
   width: 100%;
-  height: 100%;
+  min-height: 100vh;  /* Cambiado de height: 100% a min-height: 100vh */
   overflow-x: hidden;
   background-color: #0a0a0f;
+  /* Mejorar scroll en móviles */
+  -webkit-overflow-scrolling: touch;
 }
 
 body {
   background-color: #0a0a0f;
   color: white;
+}
+
+/* Ocultar scrollbar - Navegadores Webkit (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+  display: none;
+}
+
+/* Ocultar scrollbar - Firefox */
+* {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+/* Ocultar scrollbar - IE y Edge legacy */
+body::-webkit-scrollbar {
+  display: none;
 }
 
 #root {
@@ -92,6 +119,58 @@ body {
 
 .animate-float {
   animation: float 3s ease-in-out infinite;
+}
+
+/* Animación bounce para scroll indicator */
+@keyframes bounce {
+  0%, 100% {
+    transform: translateX(-50%) translateY(0);
+  }
+  50% {
+    transform: translateX(-50%) translateY(10px);
+  }
+}
+
+/* Animación slideRight para efecto de brillo */
+@keyframes slideRight {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+/* Animación spin para ficha de casino */
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Animación twinkle para diamantes */
+@keyframes twinkle {
+  0%, 100% {
+    opacity: 1;
+    transform: rotate(45deg) scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: rotate(45deg) scale(1.2);
+  }
+}
+
+/* Animación orbit para fichas flotantes */
+@keyframes orbit {
+  0% {
+    transform: rotate(0deg) translateY(-200px) rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg) translateY(-200px) rotate(-360deg);
+  }
 }
 
 /* Glow effect para elementos neón */

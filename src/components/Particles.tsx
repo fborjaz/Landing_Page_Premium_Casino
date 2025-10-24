@@ -1,7 +1,7 @@
 // En: src/components/Particles.tsx
 // Sistema de partículas tecnológico con "vibra IA"
 
-import { useRef, useMemo } from 'react'
+import { useRef, useMemo, useState, useEffect } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 
@@ -54,6 +54,7 @@ const fragmentShader = `
 export default function Particles({ count = 8000 }) {
   const pointsRef = useRef<THREE.Points>(null)
   const shaderMaterialRef = useRef<THREE.ShaderMaterial>(null)
+  const [opacity, setOpacity] = useState(0)
 
   // Generar posiciones, tamaños y alphas de partículas
   const { positions, sizes, alphas, randomValues } = useMemo(() => {
@@ -87,12 +88,29 @@ export default function Particles({ count = 8000 }) {
     return { positions, sizes, alphas, randomValues }
   }, [count])
 
+  // Fade in al inicio
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setOpacity(1)
+    }, 500)
+    return () => clearTimeout(timer)
+  }, [])
+
   // Animación CON interacción de mouse y efecto de parpadeo
   useFrame((state) => {
     if (!pointsRef.current) return
 
     const time = state.clock.getElapsedTime()
     const { mouse } = state
+
+    // Aplicar fade in gradual
+    if (shaderMaterialRef.current) {
+      shaderMaterialRef.current.opacity = THREE.MathUtils.lerp(
+        shaderMaterialRef.current.opacity || 0,
+        opacity,
+        0.05
+      )
+    }
 
     // Rotación lenta y orgánica
     pointsRef.current.rotation.y = time * 0.03
@@ -158,6 +176,7 @@ export default function Particles({ count = 8000 }) {
           color: { value: new THREE.Color('#00d4ff') }
         }}
         transparent={true}
+        opacity={0}
         blending={THREE.AdditiveBlending}
         depthWrite={false}
       />
