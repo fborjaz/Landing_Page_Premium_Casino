@@ -6,7 +6,8 @@
       "WebFetch(domain:www.reactbits.dev)",
       "Bash(npm install:*)",
       "WebFetch(domain:reactbits.dev)",
-      "Bash(npm run dev:*)"
+      "Bash(npm run dev:*)",
+      "WebFetch(domain:betmaster-dash.preview.emergentagent.com)"
     ],
     "deny": [],
     "ask": []

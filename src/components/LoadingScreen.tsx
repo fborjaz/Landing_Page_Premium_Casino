@@ -151,24 +151,26 @@ export default function LoadingScreen({ onLoadComplete }: { onLoadComplete: () =
           gap: '16px'
         }}>
           <h1 style={{
-            fontSize: window.innerWidth < 768 ? '28px' : '36px',
+            fontSize: window.innerWidth < 768 ? '32px' : '42px',
             fontWeight: '900',
             background: 'linear-gradient(to right, #22d3ee, #3b82f6, #9333ea)',
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
             backgroundClip: 'text',
             letterSpacing: '0.05em',
-            margin: 0
+            margin: 0,
+            fontFamily: '"Striker", sans-serif'
           }}>
             CASINO TECH IA
           </h1>
 
           <p style={{
-            fontSize: '18px',
+            fontSize: '20px',
             color: '#9ca3af',
             fontWeight: '600',
             margin: 0,
-            minHeight: '27px'
+            minHeight: '27px',
+            fontFamily: '"Patrick Hand", cursive'
           }}>
             Preparando tu experiencia{dots}
           </p>
@@ -225,11 +227,12 @@ export default function LoadingScreen({ onLoadComplete }: { onLoadComplete: () =
         </div>
 
         <div style={{
-          fontSize: '14px',
+          fontSize: '16px',
           color: '#6b7280',
           fontStyle: 'italic',
           textAlign: 'center',
-          minHeight: '21px'
+          minHeight: '24px',
+          fontFamily: '"Patrick Hand", cursive'
         }}>
           {progress < 30 && '🎰 Iniciando sistema de apuestas...'}
           {progress >= 30 && progress < 60 && '🤖 Activando inteligencia artificial...'}

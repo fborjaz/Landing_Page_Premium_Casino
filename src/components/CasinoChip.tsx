@@ -28,17 +28,43 @@ export default function CasinoChip() {
       {/* Sistema de iluminación */}
       <ambientLight intensity={1.5} />
       <hemisphereLight args={['#fbbf24', '#1e293b', 2]} />
+
+      {/* Luces frontales (para cara con $500) */}
       <directionalLight position={[0, 0, 12]} intensity={5} color="#ffffff" castShadow />
       <directionalLight position={[10, 5, 8]} intensity={4} color="#ffffff" />
       <directionalLight position={[-10, 5, 8]} intensity={4} color="#ffffff" />
       <directionalLight position={[0, -5, 8]} intensity={3} color="#ffffff" />
       <directionalLight position={[0, 10, 3]} intensity={3.5} color="#ffffff" />
+
+      {/* Luces puntuales */}
       <pointLight position={[0, 4, 10]} intensity={5} color="#fbbf24" />
       <pointLight position={[6, 3, 6]} intensity={3.5} color="#fbbf24" />
       <pointLight position={[-6, 3, 6]} intensity={3.5} color="#fbbf24" />
       <pointLight position={[0, -3, 6]} intensity={3} color="#fcd34d" />
+
+      {/* SpotLights enfocados */}
       <spotLight position={[5, 5, 5]} intensity={4} angle={0.5} penumbra={0.5} color="#ffffff" />
       <spotLight position={[-5, 5, 5]} intensity={4} angle={0.5} penumbra={0.5} color="#ffffff" />
+
+      {/* LUZ PRINCIPAL - Crea reflejo brillante cuando inclinas la ficha hacia ti */}
+      <spotLight
+        position={[0, 6, 15]}
+        intensity={12}
+        angle={0.3}
+        penumbra={0.2}
+        color="#ffffff"
+        castShadow
+      />
+
+      {/* Luces de soporte para el reflejo */}
+      <pointLight position={[0, 3, 12]} intensity={8} color="#ffffff" decay={2} distance={20} />
+      <pointLight position={[3, 4, 13]} intensity={6} color="#fef3c7" decay={2} distance={18} />
+      <pointLight position={[-3, 4, 13]} intensity={6} color="#fef3c7" decay={2} distance={18} />
+
+      {/* Luces direccionales para crear hotspot cuando se inclina */}
+      <directionalLight position={[0, 5, 12]} intensity={7} color="#ffffff" />
+      <directionalLight position={[2, 6, 14]} intensity={5} color="#fef3c7" />
+      <directionalLight position={[-2, 6, 14]} intensity={5} color="#fef3c7" />
 
       <group ref={chipRef}>
         {/* Cuerpo principal */}

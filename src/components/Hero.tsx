@@ -1,6 +1,7 @@
 import { Canvas } from '@react-three/fiber'
 import CasinoChip from './CasinoChip'
 import { useState, useEffect } from 'react'
+import CountUp from './CountUp'
 
 interface HeroProps {
   isAppLoaded: boolean
@@ -8,12 +9,7 @@ interface HeroProps {
 
 export default function Hero({ isAppLoaded }: HeroProps) {
   const [isLoaded, setIsLoaded] = useState(false)
-  const [spotsLeft, setSpotsLeft] = useState(47)
-  const [timeLeft, setTimeLeft] = useState({
-    hours: 23,
-    minutes: 45,
-    seconds: 30
-  })
+  const [spotsLeft, setSpotsLeft] = useState(500)
 
   useEffect(() => {
     if (isAppLoaded) {
@@ -24,64 +20,40 @@ export default function Hero({ isAppLoaded }: HeroProps) {
   useEffect(() => {
     if (!isAppLoaded) return
 
-    const timer = setInterval(() => {
-      setTimeLeft(prev => {
-        let { hours, minutes, seconds } = prev
-
-        if (seconds > 0) {
-          seconds--
-        } else if (minutes > 0) {
-          minutes--
-          seconds = 59
-        } else if (hours > 0) {
-          hours--
-          minutes = 59
-          seconds = 59
-        }
-
-        return { hours, minutes, seconds }
-      })
-    }, 1000)
-
     const spotsTimer = setInterval(() => {
       setSpotsLeft(prev => {
-        if (prev > 15) {
+        if (prev > 450) {
           return prev - 1
         }
         return prev
       })
-    }, Math.random() * 10000 + 10000)
+    }, Math.random() * 15000 + 10000)
 
     return () => {
-      clearInterval(timer)
       clearInterval(spotsTimer)
     }
   }, [isAppLoaded])
+
+  const isMobile = typeof window !== 'undefined' ? window.innerWidth < 1024 : false
 
   return (
     <section style={{
       position: 'relative',
       display: 'flex',
       minHeight: '100vh',
-      flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'center',
       padding: '80px 24px'
     }}>
 
+      {/* Badge superior centrado */}
       <div style={{
-        display: 'flex',
-        width: '100%',
-        maxWidth: '1200px',
-        flexDirection: 'column',
-        alignItems: 'center',
-        gap: window.innerWidth < 768 ? '32px' : '48px',
-        textAlign: 'center',
-        opacity: isLoaded ? 1 : 0,
-        transform: isLoaded ? 'translateY(0)' : 'translateY(50px)',
-        transition: 'opacity 1s ease-out, transform 1s ease-out'
+        position: 'absolute',
+        top: '40px',
+        left: '50%',
+        transform: 'translateX(-50%)',
+        zIndex: 20
       }}>
-
         <div style={{
           display: 'inline-flex',
           alignItems: 'center',
@@ -91,329 +63,348 @@ export default function Hero({ isAppLoaded }: HeroProps) {
           backgroundColor: 'rgba(6, 182, 212, 0.1)',
           padding: '12px 24px',
           backdropFilter: 'blur(4px)',
-          opacity: isLoaded ? 1 : 0,
-          transform: isLoaded ? 'scale(1)' : 'scale(0.8)',
-          transition: 'opacity 0.8s ease-out 0.2s, transform 0.8s ease-out 0.2s'
+          animation: 'pulseGlow 3s ease-in-out infinite',
+          position: 'relative',
+          overflow: 'hidden'
         }}>
           <div style={{
-            height: '8px',
-            width: '8px',
-            borderRadius: '9999px',
-            backgroundColor: '#22d3ee',
-            animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite'
+            position: 'absolute',
+            top: 0,
+            left: '-100%',
+            right: 0,
+            bottom: 0,
+            background: 'linear-gradient(90deg, transparent 0%, rgba(34, 211, 238, 0.4) 50%, transparent 100%)',
+            width: '200%',
+            animation: 'shimmer 4s linear infinite'
           }}></div>
+
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22d3ee" strokeWidth="2.5" style={{
+            animation: 'pulse 2s ease-in-out infinite',
+            position: 'relative',
+            zIndex: 1
+          }}>
+            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+          </svg>
           <span style={{
-            fontSize: '14px',
-            fontWeight: '500',
+            fontSize: '16px',
+            fontWeight: '600',
             textTransform: 'uppercase',
             letterSpacing: '0.05em',
-            color: '#67e8f9'
+            color: '#67e8f9',
+            position: 'relative',
+            zIndex: 1,
+            fontFamily: '"Patrick Hand", cursive'
           }}>
-            Tecnología IA Avanzada
+            TECNOLOGÍA IA DE VANGUARDIA
           </span>
         </div>
+      </div>
 
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: isMobile ? '1fr' : '1fr 400px 1fr',
+        gap: isMobile ? '48px' : '32px',
+        width: '100%',
+        maxWidth: '1400px',
+        alignItems: 'center',
+        opacity: isLoaded ? 1 : 0,
+        transform: isLoaded ? 'translateY(0)' : 'translateY(50px)',
+        transition: 'opacity 1s ease-out, transform 1s ease-out'
+      }}>
+
+        {/* COLUMNA IZQUIERDA - Contenido */}
         <div style={{
           display: 'flex',
           flexDirection: 'column',
-          gap: '16px',
+          gap: '32px',
           opacity: isLoaded ? 1 : 0,
-          transform: isLoaded ? 'translateY(0)' : 'translateY(30px)',
-          transition: 'opacity 1s ease-out 0.4s, transform 1s ease-out 0.4s'
-        }}>
-          <h1 style={{
-            fontSize: window.innerWidth < 768 ? '36px' : window.innerWidth < 1024 ? '56px' : '72px',
-            fontWeight: '700',
-            lineHeight: '1.1',
-            color: 'white'
-          }}>
-            El Futuro de las{' '}
-            <span style={{ position: 'relative', display: 'inline-block' }}>
-              Apuestas
-              <div style={{
-                position: 'absolute',
-                bottom: window.innerWidth < 768 ? '-8px' : '-12px',
-                left: '0',
-                right: '0',
-                height: window.innerWidth < 768 ? '3px' : '4px',
-                background: 'linear-gradient(to right, transparent, #22d3ee, transparent)'
-              }}></div>
-            </span>
-          </h1>
-          <h2 style={{
-            fontSize: window.innerWidth < 768 ? '32px' : window.innerWidth < 1024 ? '48px' : '64px',
-            fontWeight: '700',
-            background: 'linear-gradient(to right, #22d3ee, #3b82f6, #9333ea)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            backgroundClip: 'text'
-          }}>
-            Potenciado por IA
-          </h2>
-        </div>
-
-        <p style={{
-          maxWidth: '672px',
-          fontSize: window.innerWidth < 768 ? '16px' : window.innerWidth < 1024 ? '20px' : '24px',
-          lineHeight: '1.6',
-          color: '#d1d5db',
-          padding: window.innerWidth < 768 ? '0 16px' : '0',
-          opacity: isLoaded ? 1 : 0,
-          transform: isLoaded ? 'translateY(0)' : 'translateY(30px)',
-          transition: 'opacity 1s ease-out 0.6s, transform 1s ease-out 0.6s'
-        }}>
-          Accede a análisis predictivos y promociones exclusivas antes que nadie.
-          <span style={{
-            display: 'block',
-            marginTop: '8px',
-            fontWeight: '600',
-            color: '#22d3ee'
-          }}>
-            Tu racha ganadora empieza aquí.
-          </span>
-        </p>
-
-        <div style={{
-          display: 'flex',
-          flexWrap: 'wrap',
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: '24px',
-          fontSize: '14px',
-          color: '#d1d5db',
-          opacity: isLoaded ? 1 : 0,
-          transform: isLoaded ? 'translateY(0)' : 'translateY(20px)',
-          transition: 'opacity 0.8s ease-out 0.8s, transform 0.8s ease-out 0.8s'
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <div style={{
-              display: 'flex',
-              height: '24px',
-              width: '24px',
-              alignItems: 'center',
-              justifyContent: 'center',
-              borderRadius: '9999px',
-              backgroundColor: 'rgba(6, 182, 212, 0.2)'
-            }}>
-              <svg width="12" height="12" style={{ color: '#22d3ee' }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-              </svg>
-            </div>
-            <span>IA en tiempo real</span>
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <div style={{
-              display: 'flex',
-              height: '24px',
-              width: '24px',
-              alignItems: 'center',
-              justifyContent: 'center',
-              borderRadius: '9999px',
-              backgroundColor: 'rgba(6, 182, 212, 0.2)'
-            }}>
-              <svg width="12" height="12" style={{ color: '#22d3ee' }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-              </svg>
-            </div>
-            <span>Blockchain Seguro</span>
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <div style={{
-              display: 'flex',
-              height: '24px',
-              width: '24px',
-              alignItems: 'center',
-              justifyContent: 'center',
-              borderRadius: '9999px',
-              backgroundColor: 'rgba(6, 182, 212, 0.2)'
-            }}>
-              <svg width="12" height="12" style={{ color: '#22d3ee' }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-              </svg>
-            </div>
-            <span>Bonos Exclusivos</span>
-          </div>
-        </div>
-
-        <div style={{
-          display: 'flex',
-          width: '100%',
-          maxWidth: '1000px',
-          gap: window.innerWidth < 768 ? '32px' : '48px',
-          alignItems: 'center',
-          justifyContent: 'center',
-          flexWrap: 'wrap',
-          flexDirection: window.innerWidth < 768 ? 'column' : 'row',
-          opacity: isLoaded ? 1 : 0,
-          transform: isLoaded ? 'scale(1)' : 'scale(0.95)',
-          transition: 'opacity 1.2s ease-out 1s, transform 1.2s ease-out 1s'
+          transform: isLoaded ? 'translateX(0)' : 'translateX(-30px)',
+          transition: 'opacity 1s ease-out 0.2s, transform 1s ease-out 0.2s'
         }}>
 
+          {/* Logo */}
           <div style={{
-            position: 'relative',
-            width: window.innerWidth < 768 ? '300px' : '400px',
-            height: window.innerWidth < 768 ? '300px' : '400px',
-            minWidth: window.innerWidth < 768 ? '280px' : '300px'
+            marginBottom: '8px',
+            animation: 'floatSlow 3s ease-in-out infinite'
           }}>
-            <div style={{
-              position: 'absolute',
-              top: '-40px',
-              left: '50%',
-              transform: 'translateX(-50%)',
-              fontSize: '14px',
-              color: '#22d3ee',
-              fontWeight: '600',
-              textAlign: 'center',
-              zIndex: 10,
-              pointerEvents: 'none'
-            }}>
-              ⟳ Gira la ficha con tu mouse
-            </div>
-
-            <Canvas
-              camera={{ position: [0, 2, 8], fov: 50 }}
+            <img
+              src="/LOGO.png"
+              alt="Logo"
               style={{
-                width: '100%',
-                height: '100%',
-                background: 'transparent'
+                height: isMobile ? '40px' : '50px',
+                width: 'auto'
               }}
-            >
-              <CasinoChip />
-            </Canvas>
-
-            <div style={{
-              position: 'absolute',
-              inset: '-20px',
-              borderRadius: '50%',
-              background: 'radial-gradient(circle, rgba(34, 211, 238, 0.15), transparent 70%)',
-              pointerEvents: 'none',
-              zIndex: -1
-            }}></div>
+            />
           </div>
 
+          {/* Títulos principales */}
           <div style={{
-            position: 'relative',
-            width: '100%',
-            maxWidth: '448px',
-            flex: '1',
-            padding: window.innerWidth < 768 ? '0 16px' : '0'
-          }}>
-
-          <div style={{
-            marginBottom: '24px',
             display: 'flex',
             flexDirection: 'column',
-            gap: '12px'
+            gap: '16px'
+          }}>
+            <h1 style={{
+              fontSize: isMobile ? '40px' : '56px',
+              fontWeight: '700',
+              lineHeight: '1.1',
+              color: 'white',
+              fontFamily: '"Syne", sans-serif',
+              textTransform: 'uppercase'
+            }}>
+              LA INTELIGENCIA ARTIFICIAL QUE DOMINA LA RULETA.
+            </h1>
+
+            <h2 style={{
+              fontSize: isMobile ? '36px' : '52px',
+              fontWeight: '700',
+              color: '#22d3ee',
+              fontFamily: '"Syne", sans-serif',
+              textTransform: 'uppercase'
+            }}>
+              ¿ESTÁS DENTRO?
+            </h2>
+          </div>
+
+          {/* Descripción */}
+          <p style={{
+            fontSize: isMobile ? '18px' : '22px',
+            lineHeight: '1.6',
+            color: '#d1d5db',
+            fontFamily: '"Patrick Hand", cursive'
+          }}>
+            Únete al círculo exclusivo de 500 Fundadores que usarán nuestra IA para anticipar jugadas y transformar el azar en estrategia.
+          </p>
+
+          {/* Cupos limitados */}
+          <div style={{
+            position: 'relative',
+            overflow: 'hidden',
+            borderRadius: '12px',
+            background: spotsLeft <= 470 ? 'linear-gradient(135deg, #dc2626, #991b1b)' : 'linear-gradient(135deg, #f59e0b, #d97706)',
+            padding: '20px',
+            border: `2px solid ${spotsLeft <= 470 ? '#ef4444' : '#fbbf24'}`,
+            boxShadow: spotsLeft <= 470
+              ? '0 0 30px rgba(239, 68, 68, 0.6)'
+              : '0 0 30px rgba(251, 191, 36, 0.4)',
+            width: 'fit-content',
+            animation: spotsLeft <= 470 ? 'pulse 2s ease-in-out infinite, scaleBreath 4s ease-in-out infinite' : 'scaleBreath 4s ease-in-out infinite'
           }}>
             <div style={{
-              position: 'relative',
-              overflow: 'hidden',
-              borderRadius: '12px',
-              background: spotsLeft <= 20 ? 'linear-gradient(135deg, #dc2626, #991b1b)' : 'linear-gradient(135deg, #f59e0b, #d97706)',
-              padding: '16px',
-              border: `2px solid ${spotsLeft <= 20 ? '#ef4444' : '#fbbf24'}`,
-              boxShadow: spotsLeft <= 20
-                ? '0 0 30px rgba(239, 68, 68, 0.6), 0 10px 20px rgba(220, 38, 38, 0.4)'
-                : '0 0 30px rgba(251, 191, 36, 0.4)',
-              animation: spotsLeft <= 20 ? 'pulse 2s infinite' : 'none'
+              position: 'absolute',
+              top: 0,
+              left: '-100%',
+              width: '100%',
+              height: '100%',
+              background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent)',
+              animation: 'slideRight 3s infinite'
+            }} />
+
+            <div style={{ position: 'relative', zIndex: 10 }}>
+              <p style={{
+                fontSize: isMobile ? '36px' : '44px',
+                fontWeight: '900',
+                color: 'white',
+                textShadow: '0 2px 10px rgba(0,0,0,0.3)',
+                fontFamily: '"Striker", sans-serif',
+                textTransform: 'uppercase'
+              }}>
+                SOLO QUEDAN <span style={{
+                  display: 'inline-block',
+                  minWidth: '70px',
+                  padding: '4px 16px',
+                  background: 'rgba(0,0,0,0.3)',
+                  borderRadius: '8px',
+                  border: '2px solid rgba(255,255,255,0.3)'
+                }}>
+                  <CountUp
+                    from={0}
+                    to={spotsLeft}
+                    duration={2}
+                    delay={0.5}
+                    startWhen={isAppLoaded}
+                  />
+                </span> CUPOS
+              </p>
+            </div>
+          </div>
+
+          {/* Características */}
+          <div style={{
+            display: 'flex',
+            flexDirection: isMobile ? 'column' : 'row',
+            gap: isMobile ? '12px' : '20px',
+            marginTop: '8px',
+            justifyContent: 'flex-start'
+          }}>
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '10px',
+              animation: 'fadeInUp 0.8s ease-out 0.4s backwards'
             }}>
               <div style={{
-                position: 'absolute',
-                top: 0,
-                left: '-100%',
-                width: '100%',
-                height: '100%',
-                background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent)',
-                animation: 'slideRight 3s infinite'
-              }} />
-
-              <div style={{ position: 'relative', zIndex: 10, textAlign: 'center' }}>
-                <p style={{
-                  fontSize: '14px',
-                  fontWeight: '700',
-                  color: 'white',
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.05em',
-                  marginBottom: '8px'
-                }}>
-                  {spotsLeft <= 20 ? '🔥 ¡ÚLTIMOS CUPOS!' : '⚡ CUPOS LIMITADOS'}
-                </p>
-                <p style={{
-                  fontSize: window.innerWidth < 768 ? '24px' : '32px',
-                  fontWeight: '900',
-                  color: 'white',
-                  textShadow: '0 2px 10px rgba(0,0,0,0.3)'
-                }}>
-                  Solo quedan <span style={{
-                    display: 'inline-block',
-                    minWidth: window.innerWidth < 768 ? '50px' : '60px',
-                    padding: '4px 12px',
-                    background: 'rgba(0,0,0,0.3)',
-                    borderRadius: '8px',
-                    border: '2px solid rgba(255,255,255,0.3)'
-                  }}>{spotsLeft}</span> cupos
-                </p>
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '36px',
+                height: '36px',
+                borderRadius: '10px',
+                background: 'rgba(34, 211, 238, 0.15)',
+                border: '1px solid rgba(34, 211, 238, 0.4)',
+                flexShrink: 0,
+                animation: 'pulseGlow 3s ease-in-out infinite'
+              }}>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#22d3ee" strokeWidth="2">
+                  <path d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                  <circle cx="12" cy="9" r="2" fill="#22d3ee"/>
+                </svg>
               </div>
+              <p style={{
+                fontSize: '16px',
+                fontWeight: '600',
+                color: 'white',
+                margin: 0,
+                whiteSpace: 'nowrap',
+                fontFamily: '"Patrick Hand", cursive'
+              }}>
+                Análisis en Tiempo Real
+              </p>
             </div>
 
             <div style={{
               display: 'flex',
-              justifyContent: 'center',
-              gap: '12px',
-              padding: '16px',
-              background: 'rgba(0,0,0,0.4)',
-              borderRadius: '12px',
-              border: '1px solid rgba(34, 211, 238, 0.3)'
+              alignItems: 'center',
+              gap: '10px',
+              animation: 'fadeInUp 0.8s ease-out 0.5s backwards'
             }}>
-              <div style={{ textAlign: 'center' }}>
-                <div style={{
-                  fontSize: window.innerWidth < 768 ? '24px' : '32px',
-                  fontWeight: '700',
-                  color: '#22d3ee',
-                  fontFamily: 'monospace',
-                  minWidth: window.innerWidth < 768 ? '40px' : '50px'
-                }}>
-                  {String(timeLeft.hours).padStart(2, '0')}
-                </div>
-                <div style={{ fontSize: '10px', color: '#9ca3af', marginTop: '4px' }}>HORAS</div>
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '36px',
+                height: '36px',
+                borderRadius: '10px',
+                background: 'rgba(34, 211, 238, 0.15)',
+                border: '1px solid rgba(34, 211, 238, 0.4)',
+                flexShrink: 0,
+                animation: 'pulseGlow 3s ease-in-out 0.2s infinite'
+              }}>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#22d3ee" strokeWidth="2">
+                  <circle cx="12" cy="12" r="10"/>
+                  <circle cx="12" cy="12" r="6"/>
+                  <circle cx="12" cy="12" r="2" fill="#22d3ee"/>
+                </svg>
               </div>
-              <div style={{ fontSize: '32px', color: '#22d3ee', fontWeight: '700' }}>:</div>
-              <div style={{ textAlign: 'center' }}>
-                <div style={{
-                  fontSize: window.innerWidth < 768 ? '24px' : '32px',
-                  fontWeight: '700',
-                  color: '#22d3ee',
-                  fontFamily: 'monospace',
-                  minWidth: window.innerWidth < 768 ? '40px' : '50px'
-                }}>
-                  {String(timeLeft.minutes).padStart(2, '0')}
-                </div>
-                <div style={{ fontSize: '10px', color: '#9ca3af', marginTop: '4px' }}>MINUTOS</div>
-              </div>
-              <div style={{ fontSize: '32px', color: '#22d3ee', fontWeight: '700' }}>:</div>
-              <div style={{ textAlign: 'center' }}>
-                <div style={{
-                  fontSize: window.innerWidth < 768 ? '24px' : '32px',
-                  fontWeight: '700',
-                  color: '#22d3ee',
-                  fontFamily: 'monospace',
-                  minWidth: window.innerWidth < 768 ? '40px' : '50px'
-                }}>
-                  {String(timeLeft.seconds).padStart(2, '0')}
-                </div>
-                <div style={{ fontSize: '10px', color: '#9ca3af', marginTop: '4px' }}>SEGUNDOS</div>
-              </div>
+              <p style={{
+                fontSize: '16px',
+                fontWeight: '600',
+                color: 'white',
+                margin: 0,
+                whiteSpace: 'nowrap',
+                fontFamily: '"Patrick Hand", cursive'
+              }}>
+                Predicción de Zonas
+              </p>
             </div>
 
-            <p style={{
-              textAlign: 'center',
-              fontSize: '12px',
-              color: '#9ca3af',
-              fontStyle: 'italic'
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '10px',
+              animation: 'fadeInUp 0.8s ease-out 0.6s backwards'
             }}>
-              ⏰ La oferta termina cuando se acaben los cupos
-            </p>
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '36px',
+                height: '36px',
+                borderRadius: '10px',
+                background: 'rgba(34, 211, 238, 0.15)',
+                border: '1px solid rgba(34, 211, 238, 0.4)',
+                flexShrink: 0,
+                animation: 'pulseGlow 3s ease-in-out 0.4s infinite'
+              }}>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#22d3ee" strokeWidth="2.5">
+                  <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                </svg>
+              </div>
+              <p style={{
+                fontSize: '16px',
+                fontWeight: '600',
+                color: 'white',
+                margin: 0,
+                whiteSpace: 'nowrap',
+                fontFamily: '"Patrick Hand", cursive'
+              }}>
+                Alertas Instantáneas
+              </p>
+            </div>
           </div>
+
+        </div>
+
+        {/* COLUMNA CENTRO - Ficha Casino 3D */}
+        <div style={{
+          position: 'relative',
+          width: '100%',
+          height: isMobile ? '350px' : '450px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          animation: 'floatSlow 4s ease-in-out infinite',
+          opacity: isLoaded ? 1 : 0,
+          transform: isLoaded ? 'scale(1)' : 'scale(0.8)',
+          transition: 'opacity 1.2s ease-out 0.4s, transform 1.2s ease-out 0.4s',
+          order: isMobile ? -1 : 0
+        }}>
+          <div style={{
+            position: 'absolute',
+            top: '-40px',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            fontSize: '16px',
+            color: '#22d3ee',
+            fontWeight: '600',
+            textAlign: 'center',
+            zIndex: 10,
+            pointerEvents: 'none',
+            whiteSpace: 'nowrap',
+            animation: 'pulse 2s ease-in-out infinite',
+            fontFamily: '"Patrick Hand", cursive'
+          }}>
+            ⟳ Gira la ficha con tu mouse
+          </div>
+
+          <Canvas
+            camera={{ position: [0, 2, 8], fov: 50 }}
+            style={{
+              width: '100%',
+              height: '100%',
+              background: 'transparent'
+            }}
+          >
+            <CasinoChip />
+          </Canvas>
+
+          <div style={{
+            position: 'absolute',
+            inset: '-20px',
+            borderRadius: '50%',
+            background: 'radial-gradient(circle, rgba(34, 211, 238, 0.15), transparent 70%)',
+            pointerEvents: 'none',
+            zIndex: -1
+          }}></div>
+        </div>
+
+        {/* COLUMNA DERECHA - Formulario de Registro */}
+        <div style={{
+          position: 'relative',
+          width: '100%',
+          opacity: isLoaded ? 1 : 0,
+          transform: isLoaded ? 'translateX(0)' : 'translateX(30px)',
+          transition: 'opacity 1s ease-out 0.6s, transform 1s ease-out 0.6s'
+        }}>
 
           <div style={{
             pointerEvents: 'none',
@@ -434,6 +425,7 @@ export default function Hero({ isAppLoaded }: HeroProps) {
             backdropFilter: 'blur(24px)'
           }}>
 
+            {/* Esquinas decorativas */}
             <div style={{
               pointerEvents: 'none',
               position: 'absolute',
@@ -480,45 +472,83 @@ export default function Hero({ isAppLoaded }: HeroProps) {
             }}></div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+
+              {/* Título del formulario */}
+              <h3 style={{
+                fontSize: '24px',
+                fontWeight: '700',
+                color: '#22d3ee',
+                textAlign: 'center',
+                textTransform: 'uppercase',
+                fontFamily: '"Striker", sans-serif',
+                letterSpacing: '0.05em'
+              }}>
+                ASEGURA TU ACCESO DE FUNDADOR
+              </h3>
+
+              {/* Banner de oferta */}
               <div style={{
                 position: 'relative',
                 overflow: 'hidden',
                 borderRadius: '12px',
-                background: 'linear-gradient(to right, #facc15, #f97316)',
-                padding: '16px',
-                boxShadow: '0 10px 15px -3px rgba(250, 204, 21, 0.3)'
+                background: spotsLeft <= 470 ? 'linear-gradient(135deg, #dc2626, #991b1b)' : 'linear-gradient(135deg, #f59e0b, #d97706)',
+                padding: '20px',
+                border: `2px solid ${spotsLeft <= 470 ? '#ef4444' : '#fbbf24'}`,
+                boxShadow: spotsLeft <= 470
+                  ? '0 0 30px rgba(239, 68, 68, 0.6)'
+                  : '0 0 30px rgba(251, 191, 36, 0.4)',
+                animation: spotsLeft <= 470 ? 'pulse 2s ease-in-out infinite' : 'none'
               }}>
+                <div style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: '-100%',
+                  width: '100%',
+                  height: '100%',
+                  background: 'linear-gradient(to right, transparent, rgba(255, 255, 255, 0.4), transparent)',
+                  animation: 'slideRight 2.5s ease-in-out infinite'
+                }}></div>
+
+                <div style={{
+                  position: 'absolute',
+                  top: 0,
+                  right: 0,
+                  bottom: 0,
+                  left: 0,
+                  background: 'radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 70%)',
+                  animation: 'pulse 3s ease-in-out infinite'
+                }}></div>
+
                 <div style={{ position: 'relative', zIndex: 10, textAlign: 'center' }}>
                   <p style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '8px',
-                    fontSize: '16px',
-                    fontWeight: '700',
-                    color: '#111827'
+                    fontSize: '22px',
+                    fontWeight: '900',
+                    color: 'white',
+                    textShadow: '0 2px 10px rgba(0,0,0,0.3)',
+                    fontFamily: '"Patrick Hand", cursive'
                   }}>
-                    <span style={{
+                    Solo <span style={{
                       display: 'inline-block',
-                      height: '8px',
-                      width: '8px',
-                      borderRadius: '9999px',
-                      backgroundColor: '#111827',
-                      animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite'
-                    }}></span>
-                    ¡OFERTA DE PRE-REGISTRO!
-                  </p>
-                  <p style={{
-                    marginTop: '4px',
-                    fontSize: '14px',
-                    fontWeight: '500',
-                    color: '#1f2937'
-                  }}>
-                    $500 Giros Gratis + Duplica tu Depósito
+                      minWidth: '50px',
+                      padding: '4px 16px',
+                      background: 'rgba(0,0,0,0.3)',
+                      borderRadius: '8px',
+                      border: '2px solid rgba(255,255,255,0.3)',
+                      animation: spotsLeft <= 470 ? 'bounce 1s ease-in-out infinite' : 'none'
+                    }}>
+                      <CountUp
+                        from={0}
+                        to={spotsLeft}
+                        duration={2}
+                        delay={0.5}
+                        startWhen={isAppLoaded}
+                      />
+                    </span> lugares disponibles
                   </p>
                 </div>
               </div>
 
+              {/* Formulario */}
               <form style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                 <div style={{ position: 'relative' }}>
                   <input
@@ -554,6 +584,47 @@ export default function Hero({ isAppLoaded }: HeroProps) {
                   />
                 </div>
 
+                {/* Checkbox de comunicaciones */}
+                <label style={{
+                  display: 'flex',
+                  alignItems: 'flex-start',
+                  gap: '12px',
+                  cursor: 'pointer',
+                  fontSize: '15px',
+                  color: '#d1d5db',
+                  padding: '12px',
+                  borderRadius: '8px',
+                  border: '1px solid rgba(6, 182, 212, 0.2)',
+                  background: 'rgba(6, 182, 212, 0.05)',
+                  transition: 'all 0.3s ease',
+                  fontFamily: '"Patrick Hand", cursive'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = 'rgba(6, 182, 212, 0.4)'
+                  e.currentTarget.style.background = 'rgba(6, 182, 212, 0.1)'
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = 'rgba(6, 182, 212, 0.2)'
+                  e.currentTarget.style.background = 'rgba(6, 182, 212, 0.05)'
+                }}>
+                  <input
+                    type="checkbox"
+                    style={{
+                      marginTop: '2px',
+                      width: '20px',
+                      height: '20px',
+                      cursor: 'pointer',
+                      accentColor: '#22d3ee',
+                      flexShrink: 0,
+                      transform: 'scale(1)',
+                      transition: 'transform 0.2s ease'
+                    }}
+                    onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
+                    onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+                  />
+                  <span>Acepto recibir comunicaciones vía Email y WhatsApp.</span>
+                </label>
+
                 <button
                   type="submit"
                   style={{
@@ -562,65 +633,106 @@ export default function Hero({ isAppLoaded }: HeroProps) {
                     overflow: 'hidden',
                     borderRadius: '12px',
                     background: 'linear-gradient(to right, #06b6d4, #2563eb)',
-                    padding: '16px',
-                    fontSize: '18px',
+                    padding: '18px 24px',
+                    fontSize: '16px',
                     fontWeight: '700',
                     color: 'white',
                     border: 'none',
                     cursor: 'pointer',
-                    boxShadow: '0 10px 15px -3px rgba(6, 182, 212, 0.5)'
+                    boxShadow: '0 10px 15px -3px rgba(6, 182, 212, 0.5)',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.05em',
+                    transition: 'all 0.3s ease'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = 'translateY(-2px)'
+                    e.currentTarget.style.boxShadow = '0 15px 25px -5px rgba(6, 182, 212, 0.7)'
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = 'translateY(0)'
+                    e.currentTarget.style.boxShadow = '0 10px 15px -3px rgba(6, 182, 212, 0.5)'
                   }}
                 >
+                  <div style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: '-100%',
+                    width: '100%',
+                    height: '100%',
+                    background: 'linear-gradient(to right, transparent, rgba(255, 255, 255, 0.3), transparent)',
+                    animation: 'slideRight 3s ease-in-out infinite'
+                  }}></div>
+
                   <span style={{
                     position: 'relative',
                     zIndex: 10,
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    gap: '8px'
+                    gap: '10px'
                   }}>
-                    ¡REGISTRARME AHORA!
-                    <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    RESERVAR MI LUGAR AHORA
+                    <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
                     </svg>
                   </span>
                 </button>
               </form>
 
+              {/* Seguridad y texto informativo */}
               <div style={{
                 display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '8px',
-                paddingTop: '8px',
-                fontSize: '12px',
-                color: '#9ca3af'
+                flexDirection: 'column',
+                gap: '12px',
+                paddingTop: '8px'
               }}>
+                {/* Badge de seguridad SSL */}
                 <div style={{
                   display: 'flex',
-                  height: '20px',
-                  width: '20px',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  borderRadius: '9999px',
-                  border: '1px solid rgba(6, 182, 212, 0.3)',
-                  backgroundColor: 'rgba(6, 182, 212, 0.1)'
+                  gap: '8px',
+                  fontSize: '13px',
+                  color: '#9ca3af',
+                  fontFamily: '"Patrick Hand", cursive'
                 }}>
-                  <svg width="10" height="10" style={{ color: '#22d3ee' }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                  </svg>
+                  <div style={{
+                    display: 'flex',
+                    height: '20px',
+                    width: '20px',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    borderRadius: '9999px',
+                    border: '1px solid rgba(6, 182, 212, 0.3)',
+                    backgroundColor: 'rgba(6, 182, 212, 0.1)',
+                    flexShrink: 0
+                  }}>
+                    <svg width="10" height="10" style={{ color: '#22d3ee' }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                    </svg>
+                  </div>
+                  <span>SSL/TLS + Encriptación AES-256</span>
                 </div>
-                <span>SSL/TLS + Encriptación AES-256</span>
+
+                {/* Texto informativo */}
+                <p style={{
+                  fontSize: '14px',
+                  color: '#9ca3af',
+                  textAlign: 'center',
+                  lineHeight: '1.5',
+                  fontFamily: '"Patrick Hand", cursive'
+                }}>
+                  Registro 100% gratuito. Cero spam. Recibirás una confirmación inmediata en tu WhatsApp.
+                </p>
               </div>
             </div>
-          </div>
-
           </div>
 
         </div>
 
       </div>
 
+      {/* Scroll indicator */}
       <div style={{
         position: 'absolute',
         bottom: '40px',
@@ -647,6 +759,7 @@ export default function Hero({ isAppLoaded }: HeroProps) {
           <path d="M12 5v14M19 12l-7 7-7-7"/>
         </svg>
       </div>
+
     </section>
   )
 }
