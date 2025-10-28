@@ -1,32 +1,32 @@
-import { Canvas } from "@react-three/fiber"
-import Hero from "./components/Hero"
-import Footer from "./components/Footer"
-import Scene from "./components/Scene"
-import ScrollSection from "./components/ScrollSection"
-import LoadingScreen from "./components/LoadingScreen"
-import ParticlesBackground from "./components/ParticlesBackground"
-import Particles from "./components/Particles"
-import HowItWorks from "./components/HowItWorks"
-import { useState } from "react"
+import { Canvas } from "@react-three/fiber";
+import Hero from "./components/Hero";
+import Footer from "./components/Footer";
+import ScrollSection from "./components/ScrollSection";
+import LoadingScreen from "./components/LoadingScreen";
+import Particles from "./components/Particles";
+import HowItWorks from "./components/HowItWorks";
+import { useState } from "react";
 
 function App() {
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(true);
 
   const handleLoadComplete = () => {
-    setIsLoading(false)
-  }
+    setIsLoading(false);
+  };
 
   return (
     <>
       {isLoading && <LoadingScreen onLoadComplete={handleLoadComplete} />}
 
-      <div style={{
-        position: "relative",
-        minHeight: "100vh",
-        backgroundColor: "#0a0a0f",
-        opacity: isLoading ? 0 : 1,
-        transition: 'opacity 0.5s ease-in'
-      }}>
+      <div
+        style={{
+          position: "relative",
+          minHeight: "100vh",
+          backgroundColor: "#0a0a0f",
+          opacity: isLoading ? 0 : 1,
+          transition: "opacity 0.5s ease-in",
+        }}
+      >
         {/* Sistema de partículas con Three.js */}
         <Canvas
           style={{
@@ -38,7 +38,7 @@ function App() {
             zIndex: 1,
             width: "100%",
             height: "100%",
-            pointerEvents: "none"
+            pointerEvents: "none",
           }}
           camera={{ position: [0, 0, 30], fov: 75 }}
           eventSource={document.documentElement}
@@ -55,7 +55,7 @@ function App() {
         </main>
       </div>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
