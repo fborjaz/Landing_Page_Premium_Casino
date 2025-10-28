@@ -1,5 +1,4 @@
 # Casino Landing — Landing Page Premium
-si ha
 [![Demo deploy](https://github.com/fborjaz/Landing_Page_Premium_Casino/actions/workflows/demo.yml/badge.svg)](https://github.com/fborjaz/Landing_Page_Premium_Casino/actions/workflows/demo.yml) [![Demo Pages](https://img.shields.io/badge/demo-GitHub%20Pages-blue)](https://fborjaz.github.io/Landing_Page_Premium_Casino/)
 
 Bienvenido/a al repositorio de la landing page "Casino Landing" — una plantilla/implementación de página de aterrizaje premium construida con React, TypeScript y Vite, optimizada para animaciones, interacción 3D y rendimiento.
