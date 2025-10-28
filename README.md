@@ -1,4 +1,5 @@
 # Casino Landing — Landing Page Premium
+
 [![Demo deploy](https://github.com/fborjaz/Landing_Page_Premium_Casino/actions/workflows/demo.yml/badge.svg)](https://github.com/fborjaz/Landing_Page_Premium_Casino/actions/workflows/demo.yml) [![Demo Pages](https://img.shields.io/badge/demo-GitHub%20Pages-blue)](https://fborjaz.github.io/Landing_Page_Premium_Casino/)
 
 Bienvenido/a al repositorio de la landing page "Casino Landing" — una plantilla/implementación de página de aterrizaje premium construida con React, TypeScript y Vite, optimizada para animaciones, interacción 3D y rendimiento.
@@ -90,11 +91,7 @@ npm -v
 1. Clonar el repositorio (si corresponde):
 
 ```bash
-<<<<<<< HEAD
 git clone https://github.com/fborjaz/Landing_Page_Premium_Casino.git
-=======
-git clone <URL_DEL_REPO>
->>>>>>> parent of 9caf0de (docs: Actualiza la URL del repositorio en las instrucciones de clonación)
 cd "Casino-Landig"
 ```
 
