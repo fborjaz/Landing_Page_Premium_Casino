@@ -89,7 +89,7 @@ npm -v
 1. Clonar el repositorio (si corresponde):
 
 ```bash
-git clone <https://github.com/fborjaz/Landing_Page_Premium_Casino.git>
+git clone https://github.com/fborjaz/Landing_Page_Premium_Casino.git
 cd "Casino-Landig"
 ```
 
@@ -173,4 +173,3 @@ Notas específicas:
 
 - Autor: fborjaz
 - Repositorio: Landing_Page_Premium_Casino (rama principal: `main`).
-
