@@ -1,75 +1,176 @@
-# React + TypeScript + Vite
+# Casino Landing — Landing Page Premium
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Bienvenido/a al repositorio de la landing page "Casino Landing" — una plantilla/implementación de página de aterrizaje premium construida con React, TypeScript y Vite, optimizada para animaciones, interacción 3D y rendimiento.
 
-Currently, two official plugins are available:
+## Descripción
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Este proyecto es una landing page enfocada a servicios o productos del sector casino/entretenimiento. Incluye una experiencia visual avanzada con gráficos 3D, partículas y animaciones fluidas pensadas para impactar al usuario y mejorar la conversión.
 
-## React Compiler
+Principales características:
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+- Interfaz construida con React + TypeScript.
+- Renderizado 3D y escenas con `three` y `@react-three/fiber`.
+- Efectos de partículas y animaciones con `tsparticles`, `gsap` y `lenis`.
+- Estilos modernos con Tailwind CSS y PostCSS.
+- Configuración de desarrollo rápida con Vite (HMR rápido).
 
-Note: This will impact Vite dev & build performances.
+## Qué hace
 
-## Expanding the ESLint configuration
+- Presenta una sección hero interactiva con elementos 3D.
+- Muestra pasos, tarjetas y animaciones para explicar cómo funciona el servicio.
+- Incluye componentes reutilizables (chips, contador, cards 3D, secciones de scroll) y una estructura preparada para producción.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Tecnologías
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- Node.js (recomendado: v18+)
+- Vite (bundler / dev server)
+- React 19
+- TypeScript
+- Tailwind CSS
+- PostCSS / Autoprefixer
+- Three.js / @react-three/fiber / @react-three/drei
+- tsparticles (@tsparticles/react)
+- GSAP, Lenis para animaciones y scroll
+- Otras utilidades: mathjs, motion, ogl
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+Dependencias principales (extraídas de `package.json`):
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- react, react-dom
+- three, @react-three/fiber, @react-three/drei
+- tailwindcss, postcss, autoprefixer
+- vite, typescript
+
+## Estructura del proyecto
+
+Raíz (archivos importantes):
+
+- `index.html` — HTML principal.
+- `package.json` — scripts y dependencias.
+- `vite.config.ts` — configuración de Vite.
+- `tsconfig.json` / `tsconfig.app.json` — configuración TypeScript.
+- `tailwind.config.js` / `postcss.config.js` — configuración de Tailwind/PostCSS.
+
+Carpeta `src/` (implementación):
+
+- `main.tsx` — punto de entrada.
+- `App.tsx` — componente raíz.
+- `index.css`, `globals.css`, `App.css` — estilos base.
+- `assets/` — imágenes y recursos.
+- `components/` — componentes React reutilizables:
+  - `Hero.tsx`, `Footer.tsx`, `ScrollStack.tsx`, `Particles.tsx`, `Scene.tsx`, `StepCard3D.tsx`, etc.
+
+> Nota: La estructura completa de `src/components` está pensada para composición y fácil extensión.
+
+## Contrato mínimo (inputs / outputs)
+
+- Input: Código fuente en `src/` y assets estáticos en `public/`.
+- Output: Bundle optimizado en `dist/` tras `npm run build`.
+- Error modes: Dependencias faltantes (node_modules faltante), versión de Node incompatible.
+
+Casos borde a considerar:
+
+- Node o npm veriones antiguas.
+- Ficheros .env no configurados (aquí no hay variables obligatorias por defecto).
+- Recursos 3D grandes que afecten al rendimiento en dispositivos móviles.
+
+## Requisitos previos
+
+- Node.js v18 o superior (recomendado). Puedes comprobar tu versión con:
+
+```bash
+node -v
+npm -v
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+- Git si quieres clonar el repositorio.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Instalación (común)
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+1. Clonar el repositorio (si corresponde):
+
+```bash
+git clone <URL_DEL_REPO>
+cd "Casino-Landig"
 ```
+
+2. Instalar dependencias:
+
+```bash
+npm install
+```
+
+3. Ejecutar en modo desarrollo (HMR):
+
+```bash
+npm run dev
+```
+
+4. Construir para producción:
+
+```bash
+npm run build
+```
+
+5. Previsualizar el build de producción:
+
+```bash
+npm run preview
+```
+
+> Los scripts disponibles en `package.json` son: `dev` (vite), `build` (tsc -b && vite build), `preview` (vite preview) y `lint`.
+
+## Instrucciones por sistema operativo
+
+Windows (cmd.exe)
+
+- Abrir `cmd.exe` y ejecutar:
+
+```cmd
+cd "a:\\Visual Studio Code\\Jobs\\Landing Page Premium\\Casino-Landig"
+npm install
+npm run dev
+```
+
+Linux (bash)
+
+- Abrir terminal y ejecutar:
+
+```bash
+cd "/ruta/al/proyecto/Casino-Landig"
+npm install
+npm run dev
+```
+
+macOS (zsh / bash)
+
+- Abrir Terminal y ejecutar:
+
+```bash
+cd "/ruta/al/proyecto/Casino-Landig"
+npm install
+npm run dev
+```
+
+Notas específicas:
+
+- En Windows, si usas PowerShell: cambia `cmd` por PowerShell (los comandos `npm` son idénticos).
+- Si prefieres `pnpm` o `yarn`, puedes adaptar `npm install` por `pnpm install` o `yarn`.
+
+## Desarrollo y buenas prácticas
+
+- Mantén las dependencias actualizadas y revisa breaking changes al actualizar `three`, `react` o `vite`.
+- Optimiza texturas y modelos 3D para mejorar tiempos de carga en móviles.
+- Usa lazy-loading para módulos pesados (componentes 3D o assets grandes).
+- Ejecuta `npm run lint` antes de commits para mantener calidad de código.
+
+## Cómo contribuir
+
+- Crea una rama con una descripción clara del cambio.
+- Añade tests mínimos o ejemplo visual cuando modifiques componentes interactivos.
+- Abre un PR con descripción y capturas o GIFs del comportamiento (si aplica).
+
+## Contacto / Autor
+
+- Autor: fborjaz
+- Repositorio: Landing_Page_Premium_Casino (rama principal: `main`).
+
