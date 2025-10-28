@@ -90,7 +90,11 @@ npm -v
 1. Clonar el repositorio (si corresponde):
 
 ```bash
+<<<<<<< HEAD
 git clone https://github.com/fborjaz/Landing_Page_Premium_Casino.git
+=======
+git clone <URL_DEL_REPO>
+>>>>>>> parent of 9caf0de (docs: Actualiza la URL del repositorio en las instrucciones de clonación)
 cd "Casino-Landig"
 ```
 
