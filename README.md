@@ -1,4 +1,6 @@
 # Casino Landing — Landing Page Premium
+si ha
+[![Demo deploy](https://github.com/fborjaz/Landing_Page_Premium_Casino/actions/workflows/demo.yml/badge.svg)](https://github.com/fborjaz/Landing_Page_Premium_Casino/actions/workflows/demo.yml) [![Demo Pages](https://img.shields.io/badge/demo-GitHub%20Pages-blue)](https://fborjaz.github.io/Landing_Page_Premium_Casino/)
 
 Bienvenido/a al repositorio de la landing page "Casino Landing" — una plantilla/implementación de página de aterrizaje premium construida con React, TypeScript y Vite, optimizada para animaciones, interacción 3D y rendimiento.
 
@@ -93,25 +95,25 @@ git clone https://github.com/fborjaz/Landing_Page_Premium_Casino.git
 cd "Casino-Landig"
 ```
 
-2. Instalar dependencias:
+1. Instalar dependencias:
 
 ```bash
 npm install
 ```
 
-3. Ejecutar en modo desarrollo (HMR):
+1. Ejecutar en modo desarrollo (HMR):
 
 ```bash
 npm run dev
 ```
 
-4. Construir para producción:
+1. Construir para producción:
 
 ```bash
 npm run build
 ```
 
-5. Previsualizar el build de producción:
+1. Previsualizar el build de producción:
 
 ```bash
 npm run preview
