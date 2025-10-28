@@ -6,6 +6,7 @@ import ScrollSection from "./components/ScrollSection"
 import LoadingScreen from "./components/LoadingScreen"
 import ParticlesBackground from "./components/ParticlesBackground"
 import Particles from "./components/Particles"
+import HowItWorks from "./components/HowItWorks"
 import { useState } from "react"
 
 function App() {
@@ -48,6 +49,7 @@ function App() {
 
         <main style={{ position: "relative", zIndex: 10, color: "white" }}>
           <Hero isAppLoaded={!isLoading} />
+          <HowItWorks />
           <ScrollSection />
           <Footer />
         </main>
